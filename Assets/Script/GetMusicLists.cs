@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.AccessControl;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -94,33 +95,47 @@ public class GetMusicLists : MonoBehaviour
     protected string ReadDirsFiles(string path)
     {
         string resualt = string.Empty;
-        if (path.Contains("C"))
-        {
-            return resualt;
-        }
 
         DirectoryInfo dirInfo = new DirectoryInfo(path);
-        FileInfo[] files = dirInfo.GetFiles("*.mp3");
-        foreach (var file in files)
+        
+        string exName = dirInfo.FullName;
         {
-            Debug.Log(file.FullName);
-            resualt = file.FullName;
+            try
+            {
+                FileInfo[] files = dirInfo.GetFiles("*.mp3");
+                foreach (var file in files)
+                {
+                    Debug.Log(file.FullName);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log(exName);
+                Debug.Log(e.Message);
+
+            }
         }
+
         DirectoryInfo[] dirs = dirInfo.GetDirectories();
         foreach (var item in dirs)
         {
-            if (item.Name.Contains("Recovery") || item.Name.Contains("Sys") || item.Name.Contains("Config") || item.Name.Contains("Cache"))
+            exName = item.Name;
+            try
             {
-                continue;
+                FileInfo[] files = item.GetFiles("*.mp3");
+                foreach (var file in files)
+                {
+                    Debug.Log(file.FullName);
+                    resualt = file.FullName;
+                }
             }
-            
-            files = item.GetFiles("*.mp3");
-            foreach (var file in files)
+            catch(System.Exception e)
             {
-                Debug.Log(file.FullName);
-                resualt = file.FullName;
+                Debug.Log(exName);
+                Debug.Log(e.Message);
             }
         }
+
 
         return resualt;
     }
