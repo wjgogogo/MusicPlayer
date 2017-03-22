@@ -14,7 +14,7 @@ public class AutoShowList : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        freshList();
+        //freshList();
     }
 
     public void freshList()
@@ -45,7 +45,7 @@ public class AutoShowList : MonoBehaviour
             //set text
             newItem.GetComponentInChildren<Text>().text = "item: " + i.ToString();
         }
-        Debug.Log("FreshOk");
+        //Debug.Log("FreshOk");
     }
     // Update is called once per frame
     void Update()
