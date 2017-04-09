@@ -6,50 +6,76 @@ using UnityEngine;
 public class AutoShowList : MonoBehaviour
 {
 
-    public RectTransform parent;
-    public int itemHeight = 30;
-    public GameObject listItem;
-    public int listNum = 20;
-    
+    public int m_itemHeight = 30;
+    public int m_listNum = 20;
+    public GameObject m_listItem;
+    public RectTransform m_parent;
+
+    public float m_delayFreshSconds = 0.5f;
+    public Button m_freshButton;
+
+    public const string LIST_ITEM_TAG = "ListItem";
+    public const string FRESH_LIST_TAG = "FreshList";
+
     // Use this for initialization
     void Start()
-    {
-        //freshList();
+    { 
+        GetControlComponents();
     }
 
-    public void freshList()
+    private void GetControlComponents()
     {
-        RectTransform[] olds = parent.GetComponentsInChildren<RectTransform>();
+        if (m_freshButton == null)
+        {
+            GameObject obj = GameObject.FindGameObjectWithTag(FRESH_LIST_TAG);
+            if (obj != null)
+            {
+                m_freshButton = obj.GetComponent<Button>();
+                m_freshButton.onClick.AddListener(FreshList);
+            }
+        }
+        else
+        {
+            m_freshButton.onClick.AddListener(FreshList);
+        }
+    }
+
+    private void FreshList()
+    {
+        RectTransform[] olds = m_parent.GetComponentsInChildren<RectTransform>();
         for (int i = 0; i < olds.Length; i++)
         {
-            if(olds[i] != parent)
+            if (olds[i] != m_parent)
                 Destroy(olds[i].gameObject);
         }
-        //set rect height
-        parent.SetSizeWithCurrentAnchors(
-            RectTransform.Axis.Vertical, itemHeight * listNum);
 
-        for (int i = 0; i < listNum; i++)
+        // set the height of the item
+        m_listItem.GetComponent<RectTransform>().
+            SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, m_itemHeight);
+
+        for (int i = 0; i < m_listNum; i++)
         {
             //set instantiate
-            GameObject newItem = Instantiate(listItem, parent);
-            Vector2 pos = new Vector3(0, i * (-itemHeight));
-            //set position
-            RectTransform rectTransform = newItem.GetComponent<RectTransform>();
-            rectTransform.anchorMin = new Vector2(0, 1);
-            rectTransform.anchorMax = new Vector2(1, 1);
-            rectTransform.offsetMin = new Vector2(0, 0);
-            rectTransform.offsetMax = new Vector2(0, itemHeight);
-            
-            rectTransform.anchoredPosition = pos;
+            GameObject newItem = Instantiate(m_listItem, m_parent);
+
             //set text
             newItem.GetComponentInChildren<Text>().text = "item: " + i.ToString();
         }
-        //Debug.Log("FreshOk");
+
+        Debug.Log("FreshOk");
     }
+
+    /// <summary>
+    /// Count the delay times
+    /// </summary>
+    private int m_counts = 0;
     // Update is called once per frame
     void Update()
     {
-
+        if (m_counts == Mathf.CeilToInt(m_delayFreshSconds / Time.fixedDeltaTime))
+        {
+            FreshList();
+        }
+        m_counts++;
     }
 }

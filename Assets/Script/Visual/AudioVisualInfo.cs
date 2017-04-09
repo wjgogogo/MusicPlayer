@@ -8,7 +8,7 @@ public class AudioVisualInfo : MonoBehaviour
     /// <summary>
     /// audio tag "PlayingAudio"
     /// </summary>
-    public static string AUDIO_SOURCE = "PlayingAudio";
+    public const string AUDIO_SOURCE = "PlayingAudio";
 
     public enum SPECTRUM_SIZE : int
     {

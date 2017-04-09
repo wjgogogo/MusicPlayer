@@ -8,9 +8,9 @@ public class AudioControl : MonoBehaviour
     /*
      * get all components by below tags
      * */
-    public static string AUDIO_SLIDER_TAG = "MusicProgressBar";
-    public static string AUDIO_VOLUME_TAG = "MusicVolumeBar";
-    public static string AUDIO_INFO_TAG = "MusicInfo";
+    public const string AUDIO_SLIDER_TAG = "MusicProgressBar";
+    public const string AUDIO_VOLUME_TAG = "MusicVolumeBar";
+    public const string AUDIO_INFO_TAG = "MusicInfo";
     
     /*
      * all components of control declare in below

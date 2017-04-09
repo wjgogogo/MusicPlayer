@@ -5,10 +5,68 @@ using UnityEngine.UI;
 
 public class WindowsSettings : MonoBehaviour
 {
+    public const string SETTING_FULLSCREEN_TAG = "FullScreen";
+    public const string SETTING_MIN_MODE_TAG = "MinMode";
+    public const string SETTING_CLOSE_TAG = "CloseApp";
+
+    public Toggle m_fullScreenToggle;
+    public Button m_closeAppButton;
+    public Button m_minModeButton;
+
     // Use this for initialization
     void Start()
     {
         Debug.Log(GetWindowsSettingInfo());
+        GetControlComponents();
+    }
+
+    /// <summary>
+    /// Get all comtrol components
+    /// </summary>
+    private void GetControlComponents()
+    {
+        if (m_fullScreenToggle == null)
+        {
+            GameObject obj = GameObject.FindGameObjectWithTag(SETTING_FULLSCREEN_TAG);
+            if (obj != null)
+            {
+                m_fullScreenToggle = obj.GetComponent<Toggle>();
+                m_fullScreenToggle.onValueChanged.AddListener(ToggleFullScreen);
+            }
+        }
+        else
+        {
+            m_fullScreenToggle.onValueChanged.AddListener(ToggleFullScreen);
+        }
+
+        if (m_closeAppButton == null)
+        {
+            GameObject obj = GameObject.FindGameObjectWithTag(SETTING_CLOSE_TAG);
+            if (obj != null)
+            {
+                m_closeAppButton = obj.GetComponent<Button>();
+                m_closeAppButton.onClick.AddListener(CloseApp);
+            }
+        }
+        else
+        {
+            m_closeAppButton.onClick.AddListener(CloseApp);
+        }
+
+        if (m_minModeButton == null)
+        {
+            GameObject obj = GameObject.FindGameObjectWithTag(SETTING_MIN_MODE_TAG);
+            if(obj != null)
+            {
+                m_minModeButton = obj.GetComponent<Button>();
+                m_minModeButton.onClick.AddListener(MinMode);
+            }
+        }
+        else
+        {
+            m_minModeButton.onClick.AddListener(MinMode);
+        }
+        
     }
 
     // Update is called once per frame
@@ -16,6 +74,10 @@ public class WindowsSettings : MonoBehaviour
     {
     }
 
+    /// <summary>
+    /// Get the windows informatioin
+    /// </summary>
+    /// <returns></returns>
     public string GetWindowsSettingInfo()
     {
         string ret = string.Empty;
@@ -28,5 +90,51 @@ public class WindowsSettings : MonoBehaviour
         ret += "fullScrren: " + Screen.fullScreen.ToString();
 
         return ret;
+    }
+
+    /// <summary>
+    /// Whether full screen
+    /// </summary>
+    /// <param name="flag">The status of the toggle</param>
+    private void ToggleFullScreen(bool flag)
+    {
+        Resolution newSolution = new Resolution();
+
+        if (!flag)
+        {
+            newSolution.width = 800;
+            newSolution.height = 600;
+        }
+        else
+        {
+            newSolution = Screen.resolutions[Screen.resolutions.Length - 1];
+        }
+        Screen.SetResolution(newSolution.width, newSolution.height, flag);
+        Debug.Log("Fullscreen");
+    }
+
+    /// <summary>
+    /// Close the application
+    /// </summary>
+    private void CloseApp()
+    {
+        Debug.Log("Close App");
+        Application.Quit();
+    }
+
+    /// <summary>
+    /// Minimized the application
+    /// </summary>
+    private void MinMode()
+    {
+        try
+        {
+
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log(e.ToString());
+        }
+        Debug.Log("Min Mode");
     }
 }
