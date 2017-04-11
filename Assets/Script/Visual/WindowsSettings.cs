@@ -5,10 +5,6 @@ using UnityEngine.UI;
 
 public class WindowsSettings : MonoBehaviour
 {
-    public const string SETTING_FULLSCREEN_TAG = "FullScreen";
-    public const string SETTING_MIN_MODE_TAG = "MinMode";
-    public const string SETTING_CLOSE_TAG = "CloseApp";
-
     public Toggle m_fullScreenToggle;
     public Button m_closeAppButton;
     public Button m_minModeButton;
@@ -27,7 +23,7 @@ public class WindowsSettings : MonoBehaviour
     {
         if (m_fullScreenToggle == null)
         {
-            GameObject obj = GameObject.FindGameObjectWithTag(SETTING_FULLSCREEN_TAG);
+            GameObject obj = GameObject.FindGameObjectWithTag(TagsManager.SETTING_FULLSCREEN_TAG);
             if (obj != null)
             {
                 m_fullScreenToggle = obj.GetComponent<Toggle>();
@@ -41,7 +37,7 @@ public class WindowsSettings : MonoBehaviour
 
         if (m_closeAppButton == null)
         {
-            GameObject obj = GameObject.FindGameObjectWithTag(SETTING_CLOSE_TAG);
+            GameObject obj = GameObject.FindGameObjectWithTag(TagsManager.SETTING_CLOSE_TAG);
             if (obj != null)
             {
                 m_closeAppButton = obj.GetComponent<Button>();
@@ -55,7 +51,7 @@ public class WindowsSettings : MonoBehaviour
 
         if (m_minModeButton == null)
         {
-            GameObject obj = GameObject.FindGameObjectWithTag(SETTING_MIN_MODE_TAG);
+            GameObject obj = GameObject.FindGameObjectWithTag(TagsManager.SETTING_MIN_MODE_TAG);
             if(obj != null)
             {
                 m_minModeButton = obj.GetComponent<Button>();

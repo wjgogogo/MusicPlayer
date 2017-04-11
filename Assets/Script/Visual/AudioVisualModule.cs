@@ -8,6 +8,7 @@ public class AudioVisualModule : AudioVisualInfo
     // Use this for initialization
     void Start()
     {
+        base.Start();
     }
 
     public int m_height = 4;

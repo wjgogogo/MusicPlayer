@@ -6,13 +6,6 @@ using UnityEngine.UI;
 public class AudioControl : MonoBehaviour
 {
     /*
-     * get all components by below tags
-     * */
-    public const string AUDIO_SLIDER_TAG = "MusicProgressBar";
-    public const string AUDIO_VOLUME_TAG = "MusicVolumeBar";
-    public const string AUDIO_INFO_TAG = "MusicInfo";
-    
-    /*
      * all components of control declare in below
      * */
     public Slider m_audioSlider;
@@ -35,16 +28,16 @@ public class AudioControl : MonoBehaviour
     private void GetControlComponents()
     {
         if (m_audio == null)
-            m_audio = GameObject.FindGameObjectWithTag(AudioVisualInfo.AUDIO_SOURCE).GetComponent<AudioSource>();
+            m_audio = GameObject.FindGameObjectWithTag(TagsManager.AUDIO_SOURCE).GetComponent<AudioSource>();
 
         if (m_volumeSlider == null)
-            m_volumeSlider = GameObject.FindGameObjectWithTag(AUDIO_VOLUME_TAG).GetComponent<Slider>();
+            m_volumeSlider = GameObject.FindGameObjectWithTag(TagsManager.AUDIO_VOLUME_TAG).GetComponent<Slider>();
 
         if (m_audioSlider == null)
-            m_audioSlider = GameObject.FindGameObjectWithTag(AUDIO_SLIDER_TAG).GetComponent<Slider>();
+            m_audioSlider = GameObject.FindGameObjectWithTag(TagsManager.AUDIO_SLIDER_TAG).GetComponent<Slider>();
 
         if (m_audioInfo == null)
-            m_audioInfo = GameObject.FindGameObjectWithTag(AUDIO_INFO_TAG).GetComponent<Text>();
+            m_audioInfo = GameObject.FindGameObjectWithTag(TagsManager.AUDIO_INFO_TAG).GetComponent<Text>();
     }
 
     /// <summary>

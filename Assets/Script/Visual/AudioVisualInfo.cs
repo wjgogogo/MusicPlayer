@@ -5,10 +5,6 @@ using UnityEngine;
 
 public class AudioVisualInfo : MonoBehaviour
 {
-    /// <summary>
-    /// audio tag "PlayingAudio"
-    /// </summary>
-    public const string AUDIO_SOURCE = "PlayingAudio";
 
     public enum SPECTRUM_SIZE : int
     {
@@ -64,10 +60,10 @@ public class AudioVisualInfo : MonoBehaviour
     /// <summary>
     /// initialization 
     /// </summary>
-    private void Awake()
+    protected void Start()
     {
         m_samples = new float[(int)m_spectrumSize];
-        m_audio = GameObject.FindGameObjectWithTag(AUDIO_SOURCE).GetComponent<AudioSource>();
+        m_audio = GameObject.FindGameObjectWithTag(TagsManager.AUDIO_SOURCE).GetComponent<AudioSource>();
     }
 
     /// <summary>

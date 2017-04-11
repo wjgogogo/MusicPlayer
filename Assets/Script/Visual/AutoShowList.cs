@@ -14,9 +14,6 @@ public class AutoShowList : MonoBehaviour
     public float m_delayFreshSconds = 0.5f;
     public Button m_freshButton;
 
-    public const string LIST_ITEM_TAG = "ListItem";
-    public const string FRESH_LIST_TAG = "FreshList";
-
     // Use this for initialization
     void Start()
     { 
@@ -27,7 +24,7 @@ public class AutoShowList : MonoBehaviour
     {
         if (m_freshButton == null)
         {
-            GameObject obj = GameObject.FindGameObjectWithTag(FRESH_LIST_TAG);
+            GameObject obj = GameObject.FindGameObjectWithTag(TagsManager.FRESH_LIST_TAG);
             if (obj != null)
             {
                 m_freshButton = obj.GetComponent<Button>();
