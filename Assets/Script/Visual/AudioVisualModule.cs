@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class AudioVisualModule : AudioVisualInfo
 {
     // Use this for initialization
+#pragma warning disable CS0108 // 成员隐藏继承的成员；缺少关键字 new
     void Start()
+#pragma warning restore CS0108 // 成员隐藏继承的成员；缺少关键字 new
     {
         base.Start();
     }
