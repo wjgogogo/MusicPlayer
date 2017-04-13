@@ -9,11 +9,14 @@ public class WindowsSettings : MonoBehaviour
     public Button m_closeAppButton;
     public Button m_minModeButton;
 
+    public GameObject m_userInterface;
+
+    private bool m_calledMenu = false;
     // Use this for initialization
     void Start()
     {
-        Debug.Log(GetWindowsSettingInfo());
         GetControlComponents();
+        m_calledMenu = m_userInterface.activeSelf;
     }
 
     /// <summary>
@@ -52,7 +55,7 @@ public class WindowsSettings : MonoBehaviour
         if (m_minModeButton == null)
         {
             GameObject obj = GameObject.FindGameObjectWithTag(TagsManager.SETTING_MIN_MODE_TAG);
-            if(obj != null)
+            if (obj != null)
             {
                 m_minModeButton = obj.GetComponent<Button>();
                 m_minModeButton.onClick.AddListener(MinMode);
@@ -62,12 +65,25 @@ public class WindowsSettings : MonoBehaviour
         {
             m_minModeButton.onClick.AddListener(MinMode);
         }
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (m_calledMenu)
+            {
+                m_userInterface.SetActive(false);
+            }
+            else
+            {
+                m_userInterface.SetActive(true);
+            }
+
+            m_calledMenu = !m_calledMenu;
+        }
     }
 
     /// <summary>

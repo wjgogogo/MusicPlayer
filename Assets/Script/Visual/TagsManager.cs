@@ -24,6 +24,9 @@ public class TagsManager : MonoBehaviour
     public const string AUDIO_SLIDER_TAG = "MusicProgressBar";
     public const string AUDIO_VOLUME_TAG = "MusicVolumeBar";
     public const string AUDIO_INFO_TAG = "MusicInfo";
+    public const string AUDIO_PLAY_TAG = "MusicPlay";
+    public const string AUDIO_PRE_TAG = "MusicPre";
+    public const string AUDIO_NEXT_TAG = "MusicNext";
 
     /*
      * About music list tags
@@ -44,12 +47,16 @@ public class TagsManager : MonoBehaviour
      * */
     public AudioSource m_audio;
 
+
     /*
      * About audio control components
      * */
     public Slider m_audioSlider;
     public Slider m_volumeSlider;
     public Text m_audioInfo;
+    public Button m_audioPlay;
+    public Button m_audioPreSong;
+    public Button m_audioNextSong;
 
     /*
      * About music list components
@@ -66,12 +73,15 @@ public class TagsManager : MonoBehaviour
 
         if (m_audio != null) m_audio.tag = AUDIO_SOURCE;
 
-        if (m_audio != null) m_audioSlider.tag = AUDIO_SLIDER_TAG;
+        if (m_audioSlider != null) m_audioSlider.tag = AUDIO_SLIDER_TAG;
         if (m_volumeSlider != null) m_volumeSlider.tag = AUDIO_VOLUME_TAG;
         if (m_audioInfo != null) m_audioInfo.tag = AUDIO_INFO_TAG;
+        if (m_audioPlay != null) m_audioPlay.tag = AUDIO_PLAY_TAG;
+        if (m_audioPreSong != null) m_audioPreSong.tag = AUDIO_PRE_TAG;
+        if (m_audioNextSong != null) m_audioNextSong.tag = AUDIO_NEXT_TAG;
 
         if (m_listItem != null) m_listItem.tag = LIST_ITEM_TAG;
-        if (m_fullScreenToggle != null) m_freshButton.tag = FRESH_LIST_TAG;
+        if (m_freshButton != null) m_freshButton.tag = FRESH_LIST_TAG;
     }
 
 }
