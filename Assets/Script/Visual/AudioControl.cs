@@ -12,6 +12,10 @@ public class AudioControl : MonoBehaviour
     public Slider m_volumeSlider;
     public Text m_audioInfo;
 
+    public Toggle m_musicPlay;
+    public Button m_preSong;
+    public Button m_nextSong;
+
     //the audio source
     private AudioSource m_audio;
 
@@ -19,7 +23,6 @@ public class AudioControl : MonoBehaviour
     void Start()
     {
         GetControlComponents();
-        ControlInit();
     }
 
     /// <summary>
@@ -27,36 +30,47 @@ public class AudioControl : MonoBehaviour
     /// </summary>
     private void GetControlComponents()
     {
-        if (m_audio == null)
-            m_audio = GameObject.FindGameObjectWithTag(TagsManager.AUDIO_SOURCE).GetComponent<AudioSource>();
+        ComponentsManager objManager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
+        if (objManager.m_audio)
+        {
+            m_audio = objManager.m_audio;
+        }
 
-        if (m_volumeSlider == null)
-            m_volumeSlider = GameObject.FindGameObjectWithTag(TagsManager.AUDIO_VOLUME_TAG).GetComponent<Slider>();
+        if (objManager.m_volumeSlider)
+        {
+            m_volumeSlider = objManager.m_volumeSlider;
+            m_volumeSlider.onValueChanged.AddListener(ChangeVolume);
+            m_audio.volume = m_volumeSlider.value;
+        }
 
-        if (m_audioSlider == null)
-            m_audioSlider = GameObject.FindGameObjectWithTag(TagsManager.AUDIO_SLIDER_TAG).GetComponent<Slider>();
+        if (objManager.m_audioSlider)
+        {
+            m_audioSlider = objManager.m_audioSlider;
+            m_audioSlider.maxValue = m_audio.clip.length;
+            m_audioSlider.onValueChanged.AddListener(ChangeAudioTimeline);
+        }
 
-        if (m_audioInfo == null)
-            m_audioInfo = GameObject.FindGameObjectWithTag(TagsManager.AUDIO_INFO_TAG).GetComponent<Text>();
-    }
+        if (objManager.m_audioInfo)
+        {
+            m_audioInfo = objManager.m_audioInfo;
+            m_audioInfo.text = GetAudioInfo();
+        }
 
-    /// <summary>
-    /// initialize all components of control 
-    /// </summary>
-    private void ControlInit()
-    {
-        //audio init
-        m_audio.volume = m_volumeSlider.value;
+        if (objManager.m_audioPlay)
+        {
+            m_musicPlay = objManager.m_audioPlay;
+            m_musicPlay.onValueChanged.AddListener(ChangePlayStatus);
+        }
 
-        //music progress bar init
-        m_audioSlider.maxValue = m_audio.clip.length;
-        m_audioSlider.onValueChanged.AddListener(ChangeAudioTimeline);
+        if (objManager.m_audioPreSong)
+        {
+            m_preSong = objManager.m_audioPreSong;
+        }
 
-        //volume init
-        m_volumeSlider.onValueChanged.AddListener(ChangeVolume);
-
-        //music info init
-        m_audioInfo.text = GetAudioInfo();
+        if (objManager.m_audioNextSong)
+        {
+            m_nextSong = objManager.m_audioNextSong;
+        }
     }
 
     // Update is called once per frame
@@ -74,10 +88,6 @@ public class AudioControl : MonoBehaviour
         if (Mathf.Abs(value - m_audio.time) > 0.02f)
         {
             m_audio.time = value;
-            if (!m_audio.isPlaying)
-            {
-                m_audio.Play();
-            }
         }
     }
 
@@ -89,7 +99,19 @@ public class AudioControl : MonoBehaviour
     {
         m_audio.volume = value;
     }
-    
+
+    private void ChangePlayStatus(bool isPlaying)
+    {
+        if (isPlaying && !m_audio.isPlaying)
+        {
+            m_audio.Play();
+        }
+        else if (!isPlaying && m_audio.isPlaying)
+        {
+            m_audio.Pause();
+        }
+    }
+
     /// <summary>
     /// get the infomation of the pitched music
     /// </summary>

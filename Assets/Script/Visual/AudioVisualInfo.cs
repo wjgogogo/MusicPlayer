@@ -63,7 +63,12 @@ public class AudioVisualInfo : MonoBehaviour
     protected void Start()
     {
         m_samples = new float[(int)m_spectrumSize];
-        m_audio = GameObject.FindGameObjectWithTag(TagsManager.AUDIO_SOURCE).GetComponent<AudioSource>();
+        ComponentsManager objManager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
+
+        if (objManager.m_audio)
+        {
+            m_audio = objManager.m_audio;
+        }
     }
 
     /// <summary>

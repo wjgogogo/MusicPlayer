@@ -6,11 +6,10 @@ public class RotateWithMouse : MonoBehaviour {
 
     public Vector2 m_maxOffsetDegree = new Vector2(15, 15);
 
-    public Transform m_UICamare;
+    public Transform m_UIRoot;
 
 	// Use this for initialization
 	void Start () {
-        
     }
 	
 	// Update is called once per frame
@@ -19,9 +18,9 @@ public class RotateWithMouse : MonoBehaviour {
         Vector2 offset = new Vector2(Input.mousePosition.x - Screen.width / 2,
             Input.mousePosition.y - Screen.height / 2);
         
-        offset.x = -offset.x / Screen.currentResolution.width/ 2 * m_maxOffsetDegree.x;
-        offset.y = offset.y / Screen.currentResolution.height / 2 * m_maxOffsetDegree.y;
+        offset.x = offset.x / Screen.currentResolution.width/ 2 * m_maxOffsetDegree.x;
+        offset.y = -offset.y / Screen.currentResolution.height / 2 * m_maxOffsetDegree.y;
 
-        m_UICamare.eulerAngles = new Vector3(offset.y, offset.x);
+        m_UIRoot.eulerAngles = new Vector3(offset.y, offset.x);
     }
 }

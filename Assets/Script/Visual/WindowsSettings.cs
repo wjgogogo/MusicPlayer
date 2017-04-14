@@ -24,45 +24,23 @@ public class WindowsSettings : MonoBehaviour
     /// </summary>
     private void GetControlComponents()
     {
-        if (m_fullScreenToggle == null)
+        ComponentsManager objManager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
+
+        if (objManager.m_fullScreenToggle)
         {
-            GameObject obj = GameObject.FindGameObjectWithTag(TagsManager.SETTING_FULLSCREEN_TAG);
-            if (obj != null)
-            {
-                m_fullScreenToggle = obj.GetComponent<Toggle>();
-                m_fullScreenToggle.onValueChanged.AddListener(ToggleFullScreen);
-            }
-        }
-        else
-        {
+            m_fullScreenToggle = objManager.m_fullScreenToggle;
             m_fullScreenToggle.onValueChanged.AddListener(ToggleFullScreen);
         }
 
-        if (m_closeAppButton == null)
+        if (objManager.m_closeAppButton)
         {
-            GameObject obj = GameObject.FindGameObjectWithTag(TagsManager.SETTING_CLOSE_TAG);
-            if (obj != null)
-            {
-                m_closeAppButton = obj.GetComponent<Button>();
-                m_closeAppButton.onClick.AddListener(CloseApp);
-            }
-        }
-        else
-        {
+            m_closeAppButton = objManager.m_closeAppButton;
             m_closeAppButton.onClick.AddListener(CloseApp);
         }
 
-        if (m_minModeButton == null)
+        if (objManager.m_minModeButton)
         {
-            GameObject obj = GameObject.FindGameObjectWithTag(TagsManager.SETTING_MIN_MODE_TAG);
-            if (obj != null)
-            {
-                m_minModeButton = obj.GetComponent<Button>();
-                m_minModeButton.onClick.AddListener(MinMode);
-            }
-        }
-        else
-        {
+            m_minModeButton = objManager.m_minModeButton;
             m_minModeButton.onClick.AddListener(MinMode);
         }
 

@@ -16,23 +16,17 @@ public class AutoShowList : MonoBehaviour
 
     // Use this for initialization
     void Start()
-    { 
+    {
         GetControlComponents();
     }
 
     private void GetControlComponents()
     {
-        if (m_freshButton == null)
+        ComponentsManager objManager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
+
+        if (objManager.m_freshButton)
         {
-            GameObject obj = GameObject.FindGameObjectWithTag(TagsManager.FRESH_LIST_TAG);
-            if (obj != null)
-            {
-                m_freshButton = obj.GetComponent<Button>();
-                m_freshButton.onClick.AddListener(FreshList);
-            }
-        }
-        else
-        {
+            m_freshButton = objManager.m_freshButton;
             m_freshButton.onClick.AddListener(FreshList);
         }
     }
@@ -58,8 +52,6 @@ public class AutoShowList : MonoBehaviour
             //set text
             newItem.GetComponentInChildren<Text>().text = "item: " + i.ToString();
         }
-
-        Debug.Log("FreshOk");
     }
 
     /// <summary>
