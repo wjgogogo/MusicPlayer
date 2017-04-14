@@ -21,7 +21,7 @@ public class AudioVisualInfo : MonoBehaviour
     /// <summary>
     /// get audio source by tag named PlayingAudio
     /// </summary>
-    private AudioSource m_audio;
+    protected AudioSource m_audio;
 
     /// <summary>
     /// initialize size on awake
