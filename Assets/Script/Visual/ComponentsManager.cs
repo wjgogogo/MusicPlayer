@@ -35,7 +35,12 @@ public class ComponentsManager : MonoBehaviour
      * */
     public GameObject m_listItem;
     public Button m_freshButton;
-    
+
+    /*
+     * Manage data
+     * */
+    public GameObject DataManager;
+
     public Text m_info;
     private void Start()
     {

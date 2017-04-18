@@ -70,7 +70,6 @@ public class CubeManager : AudioVisualInfo
     {
         if (Time.time - m_preFrameTime < m_updateDeltaTime)
         {
-            Debug.Log(m_preFrameTime - Time.time);
             return false;
         }
 

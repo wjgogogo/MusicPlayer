@@ -7,7 +7,7 @@ public class AutoShowList : MonoBehaviour
 {
 
     public int m_itemHeight = 30;
-    public int m_listNum = 20;
+    //public int m_listNum = 20;
     public GameObject m_listItem;
     public RectTransform m_parent;
 
@@ -27,12 +27,32 @@ public class AutoShowList : MonoBehaviour
         if (objManager.m_freshButton)
         {
             m_freshButton = objManager.m_freshButton;
-            m_freshButton.onClick.AddListener(FreshList);
+            m_freshButton.onClick.AddListener(ClickFreshButton);
         }
     }
 
-    private void FreshList()
+    /// <summary>
+    /// call the folder to choose music
+    /// </summary>
+    private void ClickFreshButton()
     {
+        ComponentsManager objManager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
+        FileOperation file = objManager.DataManager.GetComponent<FileOperation>();
+
+        file.SetPathAndSearchFiles("选择文件夹", FileOperation.FileType.Music);
+    }
+
+    /// <summary>
+    /// fresh the list of musics
+    /// </summary>
+    void FreshMusicList()
+    {
+        ComponentsManager objManager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
+        FileOperation file = objManager.DataManager.GetComponent<FileOperation>();
+
+        if (file.MusicResult.Count <= 1)
+            return;
+
         RectTransform[] olds = m_parent.GetComponentsInChildren<RectTransform>();
         for (int i = 0; i < olds.Length; i++)
         {
@@ -44,13 +64,13 @@ public class AutoShowList : MonoBehaviour
         m_listItem.GetComponent<RectTransform>().
             SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, m_itemHeight);
 
-        for (int i = 0; i < m_listNum; i++)
+        for (int i = 0; i < file.MusicResult.Count; i++)
         {
             //set instantiate
             GameObject newItem = Instantiate(m_listItem, m_parent);
-
+            
             //set text
-            newItem.GetComponentInChildren<Text>().text = "item: " + i.ToString();
+            newItem.GetComponentInChildren<Text>().text = file.MusicResult[i];
         }
     }
 
@@ -63,8 +83,9 @@ public class AutoShowList : MonoBehaviour
     {
         if (m_counts == Mathf.CeilToInt(m_delayFreshSconds / Time.fixedDeltaTime))
         {
-            FreshList();
+            //ClickFreshButton();
         }
+        FreshMusicList();
         m_counts++;
     }
 }
