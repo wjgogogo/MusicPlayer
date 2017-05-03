@@ -82,3 +82,5 @@ $RECYCLE.BIN/
 *.meta
 Bulid
 *.asset
+config.json
+screenshot
