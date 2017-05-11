@@ -1,8 +1,9 @@
 
 {
-    "m_themeName" : "Theme_default",
-    "m_fullScreen" : false,
-    "m_playingMusicName" : "Colbie Caillat - Try",
-    "m_musicProgressVolume" : 5.52500009536743,
-    "m_volume"              : 1.0
+    "themeName" : "Theme_default",
+    "fullScreen" : false,
+    "playingMusicName" : "Blue Apollo - Adeus",
+    "musicProgressVolume" : 69.3960037231445,
+    "volume"              : 1.0,
+    "language"            : "zh"
 }

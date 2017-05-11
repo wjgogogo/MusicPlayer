@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class UIComponentsManager : MonoBehaviour
@@ -37,8 +35,20 @@ public class UIComponentsManager : MonoBehaviour
     public Button m_freshButton;
 
     /*
+     * All text in text manager
+     * */
+    public TextManager m_textManager;
+
+    /*
      * Debug components
      * */
     public Text m_info;
+
+    /*
+     * Folder browser
+     * */
+    public GameObject m_folderBrowser;
+    public Transform m_folderContent;
+    public GameObject m_folder;
 
 }

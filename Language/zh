@@ -1,0 +1,16 @@
+
+{
+    "appName" : "\u97F3\u4E50\u64AD\u653E\u5668",
+    "close"   : "\u5173\u95ED\u5E94\u7528",
+    "fullscreen" : "\u5168\u5C4F",
+    "confirm"    : "\u786E\u8BA4",
+    "cancel"     : "\u53D6\u6D88",
+    "soundVolume" : "\u97F3\u91CF",
+    "play"        : "\u64AD\u653E",
+    "pause"       : "\u6682\u505C",
+    "stop"        : "\u505C\u6B62",
+    "theme"       : "\u4E3B\u9898",
+    "import"      : "\u5BFC\u5165\u6B4C\u66F2",
+    "setting"     : "\u8BBE\u7F6E",
+    "debug"       : "\u8C03\u8BD5"
+}

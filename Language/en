@@ -1,0 +1,16 @@
+
+{
+    "appName" : "Music Player",
+    "close"   : "close",
+    "fullscreen" : "fullscreen",
+    "confirm"    : "yes",
+    "cancel"     : "no",
+    "soundVolume" : "volume",
+    "play"        : "play",
+    "pause"       : "pause",
+    "stop"        : "stop",
+    "theme"       : "themes",
+    "import"      : "import music",
+    "setting"     : "setting",
+    "debug"       : "debug"
+}

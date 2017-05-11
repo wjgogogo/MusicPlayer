@@ -1,13 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 
 public class DataAnalysis : MonoBehaviour
 {
     private DataToSave m_data = new DataToSave();
 
+    private LanguageData m_language = new LanguageData();
+
     public string m_filePath = "config.json";
+    public string m_languageFolder = "./Language";
 
     public DataToSave Data
     {
@@ -15,11 +16,20 @@ public class DataAnalysis : MonoBehaviour
         {
             return m_data;
         }
+    }
 
-        set
+    public LanguageData Language
+    {
+        get
         {
-            m_data = value;
+            return m_language;
         }
+    }
+
+    public enum LanguageType
+    {
+        zh,
+        en
     }
 
     private void Awake()
@@ -31,12 +41,12 @@ public class DataAnalysis : MonoBehaviour
     {
         ComponentsManager obj = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
 
-        m_data.m_playingMusicName = obj.m_audio.name;
-        m_data.m_musicProgressVolume = obj.m_audio.time;
+        m_data.playingMusicName = obj.m_audio.name;
+        m_data.musicProgressVolume = obj.m_audio.time;
 
-        m_data.m_volume = obj.m_audio.volume;
+        m_data.volume = obj.m_audio.volume;
 
-        m_data.m_fullScreen = Screen.fullScreen;
+        m_data.fullScreen = Screen.fullScreen;
     }
 
     private void ReadData()
@@ -50,13 +60,47 @@ public class DataAnalysis : MonoBehaviour
         {
             FileTools.ReadFileToObject(ref m_data, m_filePath);
         }
+        ReadLanguageFile();
+    }
+
+    private void ReadLanguageFile()
+    {
+        string languagePath = Path.Combine(m_languageFolder, Data.language);
+
+        if (!File.Exists(languagePath))
+        {
+            Directory.CreateDirectory(m_languageFolder);
+
+            using (File.Create(languagePath)) { };
+            FileTools.SaveObjectDataToFile(m_language, languagePath);
+        }
+        else
+        {
+            FileTools.ReadFileToObject(ref m_language, languagePath);
+        }
+    }
+
+    public void SetLanguage(LanguageType type)
+    {
+        switch (type)
+        {
+            case LanguageType.zh:
+                m_data.language = "zh";
+                break;
+            case LanguageType.en:
+                m_data.language = "en";
+                break;
+            default:
+                break;
+        }
+        ReadLanguageFile();
     }
 
     private void SaveData()
     {
         FileTools.SaveObjectDataToFile(m_data, m_filePath);
     }
-    
+
     private void OnApplicationQuit()
     {
         UpdateSaveData();

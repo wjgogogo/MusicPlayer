@@ -7,9 +7,9 @@ using System.Text.RegularExpressions;
 
 public class FolderBrowser : MonoBehaviour
 {
-    public GameObject folderBrowserDialog;
-    public Transform Content;
-    public GameObject Folder;
+    private GameObject folderBrowserDialog;
+    private Transform Content;
+    private GameObject Folder;
     private string driverSpriteName = @"FolderUI/Driver";
     private string folderSpriteName = @"FolderUI/Folder";
     private GameObject currentSelect = null;
@@ -25,8 +25,17 @@ public class FolderBrowser : MonoBehaviour
 
     private void Start()
     {
+        InitComponent();
         CloseDialog();
+    }
+
+    private void InitComponent()
+    {
         fileOperation = GetComponent<FileOperation>();
+        UIComponentsManager component = GameObject.FindGameObjectWithTag(UIComponentsManager.SELF_TAG).GetComponent<UIComponentsManager>();
+        folderBrowserDialog = component.m_folderBrowser;
+        Content = component.m_folderContent;
+        Folder = component.m_folder;
     }
 
     public void ShowDialog()
@@ -118,7 +127,7 @@ public class FolderBrowser : MonoBehaviour
     {
         if (currentSelect != null)
         {
-            fileOperation.CheckPath(currentSelect.GetComponent<FolderOpetation>().folderPath);
+            fileOperation.CheckPath(currentSelect.GetComponent<FolderOpetation>().GetFolderPath());
         }
     }
 }

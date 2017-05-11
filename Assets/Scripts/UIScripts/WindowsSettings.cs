@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class WindowsSettings : MonoBehaviour
@@ -36,7 +34,7 @@ public class WindowsSettings : MonoBehaviour
         {
             m_fullScreenToggle = uiManager.m_fullScreenToggle;
             m_fullScreenToggle.onValueChanged.AddListener(ToggleFullScreen);
-            m_fullScreenToggle.isOn = manager.m_data.Data.m_fullScreen;
+            m_fullScreenToggle.isOn = manager.m_data.Data.fullScreen;
         }
 
         if (uiManager.m_closeAppButton)

@@ -1,13 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using UnityEngine.UI;
-using System.Windows.Forms;
 using System;
-using System.Linq;
-using System.Threading;
-using System.Text;
 
 /*作为基础类存在，主要负责文件的查找，迁移和删除功能*/
 

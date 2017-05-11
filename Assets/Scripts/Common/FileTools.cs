@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using LitJson;
 using System.IO;
 
 /// <summary>
 /// read and save file
 /// </summary>
-public class FileTools
+public static class FileTools
 {
     /// <summary>
     /// text file type

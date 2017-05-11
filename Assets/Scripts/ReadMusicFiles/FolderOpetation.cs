@@ -14,7 +14,7 @@ public class FolderOpetation : MonoBehaviour
     private Color unCheckColor;
     private Color checkColor = new Color(0.5f, 1.0f, 1.0f, 1.0f);
     private Color hiddenColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
-    public string folderPath = null;
+    private string folderPath = null;
 
     private void Start()
     {

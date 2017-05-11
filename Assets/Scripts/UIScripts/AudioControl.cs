@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class AudioControl : MonoBehaviour
@@ -43,7 +41,7 @@ public class AudioControl : MonoBehaviour
             m_volumeSlider = uiManager.m_volumeSlider;
             m_volumeSlider.onValueChanged.AddListener(ChangeVolume);
 
-            m_volumeSlider.value = (float)manager.m_data.Data.m_volume;
+            m_volumeSlider.value = (float)manager.m_data.Data.volume;
         }
 
         if (uiManager.m_audioSlider)
@@ -52,7 +50,7 @@ public class AudioControl : MonoBehaviour
             m_audioSlider.maxValue = m_audio.clip.length;
             m_audioSlider.onValueChanged.AddListener(ChangeAudioTimeline);
 
-            m_audioSlider.value = (float)manager.m_data.Data.m_musicProgressVolume;
+            m_audioSlider.value = (float)manager.m_data.Data.musicProgressVolume;
         }
 
         if (uiManager.m_audioInfo)

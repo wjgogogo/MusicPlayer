@@ -9,8 +9,9 @@ public class AnalyseMusic : MonoBehaviour
 {
     private FileOperation fileOperation;
     private static string outFilePath = @"C:\Users\Public\Music\wav_musicfile.wav";
+    private string currentPlayPath = null;
     private AudioSource source;
-    private bool flag = false;
+    public bool flag = false;
 
     private IWavePlayer iwavePlayer;
     private WaveStream waveStream;
@@ -21,18 +22,6 @@ public class AnalyseMusic : MonoBehaviour
         fileOperation = gameObject.GetComponent<FileOperation>();
         source = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>().m_audio;
     }
-
-    //public void NewLoadMusic(string path)
-    //{
-    //    byte[] imageData;
-    //    using (FileStream fsRead = new FileStream(path, FileMode.Open))
-    //    {
-    //        int fsLen = (int)fsRead.Length;
-    //        imageData = new byte[fsLen];
-    //        fsRead.Read(imageData, 0, imageData.Length);
-    //    }
-    //    LoadAudioFromData(imageData);
-    //}
 
     private bool LoadAudioFromData(byte[] imageData)
     {
@@ -57,6 +46,9 @@ public class AnalyseMusic : MonoBehaviour
 
     public void LoadMusic(string path)
     {
+        if (currentPlayPath == path)
+            return;
+        currentPlayPath = path;
         if (path.EndsWith(".ogg") || path.EndsWith(".wav"))
         {
             StartCoroutine(PlayMusic(path));
@@ -66,7 +58,6 @@ public class AnalyseMusic : MonoBehaviour
             Action action = new Action(() =>
             {
                 CovertMp3File(path);
-                flag = true;
             });
             action.BeginInvoke(Callback, null);
         }
@@ -79,9 +70,11 @@ public class AnalyseMusic : MonoBehaviour
 
     private IEnumerator PlayMusic(string path)
     {
-        WWW www = new WWW("file://" + outFilePath);
+        WWW www = new WWW("file://" + path);
         yield return www;
+
         source.clip = www.GetAudioClip();
+
         source.Play();
     }
 

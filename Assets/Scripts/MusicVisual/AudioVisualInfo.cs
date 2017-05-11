@@ -1,7 +1,4 @@
-﻿
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class AudioVisualInfo : MonoBehaviour
 {
@@ -86,28 +83,7 @@ public abstract class AudioVisualInfo : MonoBehaviour
         {
             m_audio.GetSpectrumData(m_leftChannelSamples, 0, m_fftWindow);
             m_audio.GetSpectrumData(m_rightChannelSamples, 1, m_fftWindow);
-
-            if (m_samplesSpace > (int)m_spectrumSize / m_samplesSize)
-                m_samplesSpace = (int)m_spectrumSize / m_samplesSize;
-
-            for (int i = 0; i < m_samplesSize; i++)
-            {
-                m_samples[0, i] = 0;
-                m_samples[1, i] = 0;
-
-                // cut off low rate, so use i + 2
-                for (int j = (i + 4) * m_samplesSpace; j < (i + 5) * m_samplesSpace; j++)
-                {
-                    if (j >= (int)m_spectrumSize)
-                    {
-                        Debug.Log("Out of range");
-                        break;
-                    }
-
-                    m_samples[0, i] += m_leftChannelSamples[j];
-                    m_samples[1, i] += m_rightChannelSamples[j];
-                }
-            }
+            AdjustSamples();
         }
         catch (System.Exception e)
         {
@@ -115,6 +91,30 @@ public abstract class AudioVisualInfo : MonoBehaviour
         }
     }
 
+    private void AdjustSamples()
+    {
+        if (m_samplesSpace > (int)m_spectrumSize / m_samplesSize)
+            m_samplesSpace = (int)m_spectrumSize / m_samplesSize;
+
+        for (int i = 0; i < m_samplesSize; i++)
+        {
+            m_samples[0, i] = 0;
+            m_samples[1, i] = 0;
+
+            // cut off low rate, so use i + 2
+            for (int j = (i + 4) * m_samplesSpace; j < (i + 5) * m_samplesSpace; j++)
+            {
+                if (j >= (int)m_spectrumSize)
+                {
+                    Debug.Log("Out of range");
+                    break;
+                }
+
+                m_samples[0, i] += m_leftChannelSamples[j];
+                m_samples[1, i] += m_rightChannelSamples[j];
+            }
+        }
+    }
 
     protected void SetSamplesSize(int size)
     {

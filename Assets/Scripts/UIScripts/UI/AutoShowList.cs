@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityEngine;
 
 public class AutoShowList : MonoBehaviour
@@ -61,11 +59,11 @@ public class AutoShowList : MonoBehaviour
             if (m_launch)
             {
                 AnalyseMusic analyseMusic = manager.DataManager.GetComponent<AnalyseMusic>();
-                if (!manager.m_data.Data.m_playingMusicName.Equals("Music"))
+                if (!manager.m_data.Data.playingMusicName.Equals("Music"))
                 {
                     string value;
-                    file.MusicsResult.TryGetValue(manager.m_data.Data.m_playingMusicName, out value);
-                    manager.m_audio.name = manager.m_data.Data.m_playingMusicName;
+                    file.MusicsResult.TryGetValue(manager.m_data.Data.playingMusicName, out value);
+                    manager.m_audio.name = manager.m_data.Data.playingMusicName;
                     analyseMusic.LoadMusic(value);
                 }
                 m_launch = false;
