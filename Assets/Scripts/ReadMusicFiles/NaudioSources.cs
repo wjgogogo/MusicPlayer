@@ -69,4 +69,13 @@
     {
 
     }
+
+    /// <summary>
+    /// set play time
+    /// </summary>
+    /// <param name="time"></param>
+    public void SetTime(float time)
+    {
+
+    }
 }

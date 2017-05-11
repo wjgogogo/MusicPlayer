@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
-public class Theme_Default : Theme
+public class Theme_default : Theme
 {
+    [SerializeField]
+    private Button[] m_changeModules;
+
     private new void Start()
     {
         base.Start();
-        Debug.Log("module length:  " + m_modules.Length);
-
-        Debug.Log("Not succeed" + ActiveOneModule(2, true));
     }
 }

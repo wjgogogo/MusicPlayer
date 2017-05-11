@@ -3,12 +3,16 @@ using UnityEngine;
 
 public class DataAnalysis : MonoBehaviour
 {
+    [SerializeField]
+    public static string m_filePath = "config.json";
+    [SerializeField]
+    public static string m_languageFolder = "./Language";
+
     private DataToSave m_data = new DataToSave();
 
     private LanguageData m_language = new LanguageData();
 
-    public string m_filePath = "config.json";
-    public string m_languageFolder = "./Language";
+    private string m_type = "zh";
 
     public DataToSave Data
     {
@@ -26,15 +30,36 @@ public class DataAnalysis : MonoBehaviour
         }
     }
 
-    public enum LanguageType
+    public string Type
     {
-        zh,
-        en
+        get
+        {
+            return m_type;
+        }
+        set
+        {
+            SetLanguage(value);
+            m_type = value;
+        }
     }
+    
+    public delegate void LanguageEventProxy();
+
+    public event LanguageEventProxy OnLanguageTypeChange;
 
     private void Awake()
     {
         ReadData();
+    }
+
+    private void Start()
+    {
+        OnLanguageTypeChange += LanguageChange;
+    }
+
+    private void LanguageChange()
+    {
+        Debug.Log("Language changed to " + m_type.ToString());
     }
 
     public void UpdateSaveData()
@@ -53,7 +78,11 @@ public class DataAnalysis : MonoBehaviour
     {
         if (!File.Exists(m_filePath))
         {
-            using (File.Create(m_filePath)) ;
+            using (File.Create(m_filePath))
+            {
+                ;
+            }
+
             FileTools.SaveObjectDataToFile(m_data, m_filePath);
         }
         else
@@ -80,20 +109,11 @@ public class DataAnalysis : MonoBehaviour
         }
     }
 
-    public void SetLanguage(LanguageType type)
+    private void SetLanguage(string type)
     {
-        switch (type)
-        {
-            case LanguageType.zh:
-                m_data.language = "zh";
-                break;
-            case LanguageType.en:
-                m_data.language = "en";
-                break;
-            default:
-                break;
-        }
+        m_data.language = type;
         ReadLanguageFile();
+        OnLanguageTypeChange();
     }
 
     private void SaveData()

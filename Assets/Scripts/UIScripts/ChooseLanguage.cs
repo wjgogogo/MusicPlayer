@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ChooseLanguage : MonoBehaviour
 {
-
-    Dropdown m_dropdown;
+    [SerializeField]
+    private Dropdown m_dropdown;
 
     List<string> options = new List<string>();
 
@@ -14,8 +15,12 @@ public class ChooseLanguage : MonoBehaviour
         m_dropdown = GetComponent<Dropdown>();
         m_dropdown.ClearOptions();
 
-        options.Add("zh");
-        options.Add("en");
+        var files = Directory.GetFiles(DataAnalysis.m_languageFolder);
+
+        for (int i = 0; i < files.Length; i++)
+        {
+            options.Add(files[i].Replace(DataAnalysis.m_languageFolder + "\\", ""));
+        }
 
         m_dropdown.AddOptions(options);
         m_dropdown.onValueChanged.AddListener(SetLanguage);
@@ -23,19 +28,12 @@ public class ChooseLanguage : MonoBehaviour
 
     void SetLanguage(int index)
     {
-        UIComponentsManager uiManager = GameObject.FindGameObjectWithTag(UIComponentsManager.SELF_TAG).GetComponent<UIComponentsManager>();
+        ComponentsManager manager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
+        
+        index = options.Count - 1 - index;
+        index = index < 0 ? 0 : index;
+        manager.m_data.Type = options[index];
 
-        switch (index)
-        {
-            case 0:
-                uiManager.m_textManager.ChangeLanguage(DataAnalysis.LanguageType.zh);
-                break;
-            case 1:
-                uiManager.m_textManager.ChangeLanguage(DataAnalysis.LanguageType.en);
-                break;
-            default:
-                break;
-        }
     }
 
 }

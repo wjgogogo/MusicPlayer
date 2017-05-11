@@ -33,12 +33,7 @@ public class UIComponentsManager : MonoBehaviour
      * */
     public GameObject m_listItem;
     public Button m_freshButton;
-
-    /*
-     * All text in text manager
-     * */
-    public TextManager m_textManager;
-
+    
     /*
      * Debug components
      * */

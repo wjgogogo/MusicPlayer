@@ -16,14 +16,22 @@ public class PlayModule : ThemeModule
     private Button m_preSong;
     [SerializeField]
     private Button m_nextSong;
-    
-    //lack a naudio sources
 
+    //lack a naudio sources
+    private NaudioSources m_audio;
     //lack a list control component
+
+    private void Start()
+    {
+        if (m_volumeSlider) { m_volumeSlider.onValueChanged.AddListener(SetVolume); }
+        if (m_audioSlider) { m_audioSlider.onValueChanged.AddListener(SetAudioTime); }
+        //get the Naudio sources
+        
+    }
 
     public void PlaySong(bool status)
     {
-
+        m_audio.Play(status);
     }
 
     public void PlayNextSong()
@@ -36,23 +44,28 @@ public class PlayModule : ThemeModule
 
     }
 
-    public void SyncAudioSlider()
+    private void SyncAudioSlider()
     {
-
+        m_audioSlider.value = m_audio.CurrentTime / m_audio.TotalTime;
     }
 
-    public void SetVolume(float value)
+    private void SetVolume(float value)
     {
-
+        m_audio.SetVolume(value);
     }
 
-    public void SetAudioInfo()
+    private void SetAudioTime(float time)
     {
+        m_audio.SetTime(time);
+    }
 
+    private void SetAudioInfo()
+    {
+        m_audioInfo.text = m_audio.Name;
     }
 
     private void Update()
     {
-        SyncAudioSlider();
+        //SyncAudioSlider();
     }
 }
