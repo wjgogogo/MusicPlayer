@@ -3,12 +3,7 @@
 public class ComponentsManager : MonoBehaviour
 {
     public const string SELF_TAG = "ComponentsManager";
-
-    /*
-     * About audio sources components
-     * */
-    public AudioSource m_audio;
-
+    
     /*
      * Manage data
      * */

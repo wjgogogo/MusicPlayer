@@ -114,10 +114,10 @@ public class DataAnalysis : MonoBehaviour
     {
         ComponentsManager obj = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
 
-        m_data.playingMusicName = obj.m_audio.name;
-        m_data.musicProgressVolume = obj.m_audio.time;
+        //m_data.playingMusicName = obj.m_audio.name;
+        //m_data.musicProgressVolume = obj.m_audio.time;
 
-        m_data.volume = obj.m_audio.volume;
+        //m_data.volume = obj.m_audio.volume;
 
         m_data.fullScreen = Screen.fullScreen;
     }

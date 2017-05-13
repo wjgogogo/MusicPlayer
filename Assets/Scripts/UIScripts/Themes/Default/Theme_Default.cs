@@ -4,14 +4,13 @@ using UnityEngine.UI;
 public class Theme_Default : Theme
 {
     [SerializeField]
-    private KeyCode CallOutKey = KeyCode.Escape;
-
+    private KeyCode m_callOutKey = KeyCode.Escape;
     [SerializeField]
-    private ListModule listModule;
+    private ListModule m_listModule;
     [SerializeField]
-    private PlayModule playModule;
+    private PlayModule m_playModule;
     [SerializeField]
-    private SettingModule settingModule;
+    private SettingModule m_settingModule;
 
     private bool m_calledMenu = true;
 
@@ -22,7 +21,7 @@ public class Theme_Default : Theme
 
     private void Update()
     {
-        if (Input.GetKeyDown(CallOutKey))
+        if (Input.GetKeyDown(m_callOutKey))
         {
             m_calledMenu = !m_calledMenu;
             SetAllModulesActive(m_calledMenu);

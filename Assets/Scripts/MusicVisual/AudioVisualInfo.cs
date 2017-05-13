@@ -64,10 +64,10 @@ public abstract class AudioVisualInfo : MonoBehaviour
         m_rightChannelSamples = new float[(int)m_spectrumSize];
         ComponentsManager objManager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
 
-        if (objManager.m_audio)
-        {
-            m_audio = objManager.m_audio;
-        }
+        //if (objManager.m_audio)
+        //{
+        //    m_audio = objManager.m_audio;
+        //}
     }
 
     private void FixedUpdate()

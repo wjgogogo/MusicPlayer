@@ -17,21 +17,26 @@ public class PlayModule : ThemeModule
     [SerializeField]
     private Button m_nextSong;
 
+    public string TestMusicFilePath = "";
     //lack a naudio sources
-    private NaudioSources m_audio;
+    private NaudioSources m_audio=new NaudioSources();
     //lack a list control component
 
     private void Start()
     {
-        if (m_volumeSlider) { m_volumeSlider.onValueChanged.AddListener(SetVolume); }
-        if (m_audioSlider) { m_audioSlider.onValueChanged.AddListener(SetAudioTime); }
         //get the Naudio sources
-        
+        m_audio.LoadMusic(TestMusicFilePath);
+
+        m_volumeSlider.onValueChanged.AddListener(SetVolume);
+        m_audioSlider.maxValue = m_audio.TotalTime;
+        m_audioSlider.onValueChanged.AddListener(SetAudioTime);
+        m_musicPlay.onValueChanged.AddListener(PlaySong);
     }
 
     public void PlaySong(bool status)
     {
         m_audio.Play(status);
+        Debug.Log(status);
     }
 
     public void PlayNextSong()
@@ -46,17 +51,18 @@ public class PlayModule : ThemeModule
 
     private void SyncAudioSlider()
     {
-        m_audioSlider.value = m_audio.CurrentTime / m_audio.TotalTime;
+        m_audioSlider.value = m_audio.CurrentTime;
     }
 
     private void SetVolume(float value)
     {
-        m_audio.SetVolume(value);
+        m_audio.Volume = value;
     }
 
     private void SetAudioTime(float time)
     {
-        m_audio.SetTime(time);
+        if (Mathf.Abs(time - m_audio.CurrentTime) > 1.0f)
+            m_audio.CurrentTime = time;
     }
 
     private void SetAudioInfo()
@@ -66,6 +72,11 @@ public class PlayModule : ThemeModule
 
     private void Update()
     {
-        //SyncAudioSlider();
+        SyncAudioSlider();
+    }
+
+    private void OnApplicationQuit()
+    {
+        m_audio.OnApplicationQuit();
     }
 }
