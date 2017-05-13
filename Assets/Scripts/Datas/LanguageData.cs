@@ -14,6 +14,8 @@
     public string setting;
     public string previousSong;
     public string nextSong;
+    public string setTheme;
+    public string setLanguage;
 
     public string debug;
 
@@ -33,6 +35,8 @@
         setting = @"设置";
         previousSong = @"上一曲";
         nextSong = @"下一曲";
+        setTheme = @"设置主题";
+        setLanguage = @"设置语言";
 
         debug = @"调试";
     }

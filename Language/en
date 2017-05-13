@@ -1,7 +1,7 @@
 
 {
-    "appName" : "Music Player",
-    "close"   : "close",
+    "appName" : "MusicPlayer",
+    "close"   : "close app",
     "fullscreen" : "fullscreen",
     "confirm"    : "yes",
     "cancel"     : "no",
@@ -9,8 +9,12 @@
     "play"        : "play",
     "pause"       : "pause",
     "stop"        : "stop",
-    "theme"       : "themes",
-    "import"      : "import music",
-    "setting"     : "setting",
-    "debug"       : "debug"
+    "theme"       : "theme",
+    "import"      : "import songs",
+    "setting"     : "settings",
+    "previousSong" : "pre song",
+    "nextSong"     : "next song",
+    "setTheme"     : "choose theme",
+    "setLanguage"  : "choose language",
+    "debug"        : "debug"
 }

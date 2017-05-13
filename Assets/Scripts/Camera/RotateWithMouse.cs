@@ -6,15 +6,11 @@ public class RotateWithMouse : MonoBehaviour {
 
     public Vector2 m_maxOffsetDegree = new Vector2(15, 15);
 
-    public Transform m_UIRoot;
+    private Transform m_UIRoot;
 
 	// Use this for initialization
 	void Start () {
-        UIComponentsManager objManager = GameObject.FindGameObjectWithTag(UIComponentsManager.SELF_TAG).GetComponent<UIComponentsManager>();
-        if (objManager.m_UIRoot)
-        {
-            m_UIRoot = objManager.m_UIRoot.GetComponent<Transform>();
-        }
+        m_UIRoot = transform;
     }
 	
 	// Update is called once per frame

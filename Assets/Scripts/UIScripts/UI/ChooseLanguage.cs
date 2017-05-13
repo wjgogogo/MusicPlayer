@@ -29,7 +29,7 @@ public class ChooseLanguage : MonoBehaviour
     {
         ComponentsManager manager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
         
-        manager.m_data.Type = m_dropdown.options[index].text;
+        manager.m_data.LanguageType = m_dropdown.options[index].text;
     }
 
 }

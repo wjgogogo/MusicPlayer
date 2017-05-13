@@ -12,5 +12,9 @@
     "theme"       : "\u4E3B\u9898",
     "import"      : "\u5BFC\u5165\u6B4C\u66F2",
     "setting"     : "\u8BBE\u7F6E",
-    "debug"       : "\u8C03\u8BD5"
+    "previousSong" : "\u4E0A\u4E00\u66F2",
+    "nextSong"     : "\u4E0B\u4E00\u66F2",
+    "setTheme"     : "\u8BBE\u7F6E\u4E3B\u9898",
+    "setLanguage"  : "\u8BBE\u7F6E\u8BED\u8A00",
+    "debug"        : "\u8C03\u8BD5"
 }

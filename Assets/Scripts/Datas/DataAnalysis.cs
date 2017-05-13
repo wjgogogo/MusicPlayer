@@ -17,7 +17,7 @@ public class DataAnalysis : MonoBehaviour
     private List<string> m_languageNames = new List<string>();
     private List<string> m_themeNames = new List<string>();
 
-    private string m_type = "zh";
+    private string m_languageType = "zh";
     private string m_theme = ThemePrefix + "Default";
 
     public DataToSave Data
@@ -36,16 +36,16 @@ public class DataAnalysis : MonoBehaviour
         }
     }
 
-    public string Type
+    public string LanguageType
     {
         get
         {
-            return m_type;
+            return m_languageType;
         }
         set
         {
             SetLanguage(value);
-            m_type = value;
+            m_languageType = value;
         }
     }
 
@@ -84,11 +84,6 @@ public class DataAnalysis : MonoBehaviour
 
     private void Awake()
     {
-        ReadData();
-    }
-
-    private void Start()
-    {
         string[] languages = FileTools.GetFilesByRecursion(LanguageFolder, "*", 1);
         FileTools.GetFilesNameWithoutExtension(languages);
         m_languageNames.AddRange(languages);
@@ -102,13 +97,17 @@ public class DataAnalysis : MonoBehaviour
                 m_themeNames.Add(objs[i].name.Replace(ThemePrefix, ""));
             }
         }
+        ReadData();
+    }
 
+    private void Start()
+    {
         OnLanguageTypeChange += LanguageChange;
     }
 
     private void LanguageChange()
     {
-        Debug.Log("Language changed to " + m_type.ToString());
+        Debug.Log("Language changed to " + m_languageType.ToString());
     }
 
     public void UpdateSaveData()

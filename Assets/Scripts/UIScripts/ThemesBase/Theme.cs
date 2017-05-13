@@ -15,7 +15,7 @@ public class Theme : MonoBehaviour
     /// <param name="i"></param>
     /// <param name="status"></param>
     /// <returns>return true if succeed</returns>
-    public bool SetActiveModule(int i, bool status)
+    protected bool SetActiveModule(int i, bool status)
     {
         if (i >= m_modules.Length)
             return false;
@@ -30,7 +30,7 @@ public class Theme : MonoBehaviour
     /// <param name="index"></param>
     /// <param name="status"></param>
     /// <returns>return true if succeed</returns>
-    public bool ActiveOneModule(int index, bool status)
+    protected bool ActiveOneModule(int index, bool status)
     {
         if (index >= m_modules.Length)
             return false;
@@ -49,4 +49,15 @@ public class Theme : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// set all the modules status
+    /// </summary>
+    /// <param name="status"></param>
+    protected void SetAllModulesActive(bool status)
+    {
+        for (int i = 0; i < m_modules.Length; i++)
+        {
+            SetActiveModule(i, status);
+        }
+    }
 }
