@@ -1,18 +1,24 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class DataAnalysis : MonoBehaviour
 {
+    public const string FilePath = "config.json";
+    public const string LanguageFolder = "./Language";
+    public const string ThemeFolder = "Prefabs/Themes";
+    public const string ThemePrefix = "Theme_";
     [SerializeField]
-    public static string m_filePath = "config.json";
-    [SerializeField]
-    public static string m_languageFolder = "./Language";
+    private Transform m_themeRoot;
 
     private DataToSave m_data = new DataToSave();
-
     private LanguageData m_language = new LanguageData();
 
+    private List<string> m_languageNames = new List<string>();
+    private List<string> m_themeNames = new List<string>();
+
     private string m_type = "zh";
+    private string m_theme = ThemePrefix + "Default";
 
     public DataToSave Data
     {
@@ -42,7 +48,36 @@ public class DataAnalysis : MonoBehaviour
             m_type = value;
         }
     }
-    
+
+    public string[] LanguageNames
+    {
+        get
+        {
+            return m_languageNames.ToArray();
+        }
+    }
+
+    public string[] ThemeNames
+    {
+        get
+        {
+            return m_themeNames.ToArray();
+        }
+    }
+
+    public string Theme
+    {
+        get
+        {
+            return m_theme;
+        }
+
+        set
+        {
+            m_theme = value;
+        }
+    }
+
     public delegate void LanguageEventProxy();
 
     public event LanguageEventProxy OnLanguageTypeChange;
@@ -54,6 +89,20 @@ public class DataAnalysis : MonoBehaviour
 
     private void Start()
     {
+        string[] languages = FileTools.GetFilesByRecursion(LanguageFolder, "*", 1);
+        FileTools.GetFilesNameWithoutExtension(languages);
+        m_languageNames.AddRange(languages);
+
+        Object[] objs = Resources.LoadAll(ThemeFolder);
+
+        for (int i = 0; i < objs.Length; i++)
+        {
+            if (objs[i].name.IndexOf(ThemePrefix) != -1)
+            {
+                m_themeNames.Add(objs[i].name.Replace(ThemePrefix, ""));
+            }
+        }
+
         OnLanguageTypeChange += LanguageChange;
     }
 
@@ -76,29 +125,29 @@ public class DataAnalysis : MonoBehaviour
 
     private void ReadData()
     {
-        if (!File.Exists(m_filePath))
+        if (!File.Exists(FilePath))
         {
-            using (File.Create(m_filePath))
+            using (File.Create(FilePath))
             {
                 ;
             }
 
-            FileTools.SaveObjectDataToFile(m_data, m_filePath);
+            FileTools.SaveObjectDataToFile(m_data, FilePath);
         }
         else
         {
-            FileTools.ReadFileToObject(ref m_data, m_filePath);
+            FileTools.ReadFileToObject(ref m_data, FilePath);
         }
         ReadLanguageFile();
     }
 
     private void ReadLanguageFile()
     {
-        string languagePath = Path.Combine(m_languageFolder, Data.language);
+        string languagePath = Path.Combine(LanguageFolder, Data.language);
 
         if (!File.Exists(languagePath))
         {
-            Directory.CreateDirectory(m_languageFolder);
+            Directory.CreateDirectory(LanguageFolder);
 
             using (File.Create(languagePath)) { };
             FileTools.SaveObjectDataToFile(m_language, languagePath);
@@ -116,9 +165,19 @@ public class DataAnalysis : MonoBehaviour
         OnLanguageTypeChange();
     }
 
+    private void SetTheme(string name)
+    {
+        Theme old = m_themeRoot.GetComponentInChildren<Theme>();
+
+        Destroy(old.gameObject);
+
+        GameObject newTheme = (GameObject)FileTools.GetResoures(Path.Combine(ThemeFolder, name));
+        Instantiate(newTheme, m_themeRoot);
+    }
+
     private void SaveData()
     {
-        FileTools.SaveObjectDataToFile(m_data, m_filePath);
+        FileTools.SaveObjectDataToFile(m_data, FilePath);
     }
 
     private void OnApplicationQuit()

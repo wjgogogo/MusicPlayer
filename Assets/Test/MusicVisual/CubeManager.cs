@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class CubeManager : AudioVisualInfo
 {
-    public int m_cubeNumber = 10;
-    public Vector2 m_origin = Vector2.zero;
-    public float m_radius = 10.0f;
+    [SerializeField]
+    private int m_cubeNumber = 10;
+    [SerializeField]
+    private Vector2 m_origin = Vector2.zero;
+    [SerializeField]
+    private float m_radius = 10.0f;
 
-    public GameObject m_cube;
-    public Material[] m_cubeMaterials;
+    [SerializeField]
+    private GameObject m_cube;
+    [SerializeField]
+    private Material[] m_cubeMaterials;
 
-    public float m_maxLength = 200.0f;
-    public float m_recoveryRate = 20f;
+    [SerializeField]
+    private float m_maxLength = 200.0f;
+    [SerializeField]
+    private float m_recoveryRate = 20f;
 
     private List<GameObject> m_cubes;
 
@@ -49,16 +56,20 @@ public class CubeManager : AudioVisualInfo
 
         for (int i = 0; i < m_cubes.Count; i++)
         {
+            float oldY = m_cubes[i].transform.localScale.y;
+            float nowY = 0.0f;
+
             if (Samples[0, i] * m_maxLength - m_cubes[i].transform.localScale.y > 0 || update)
             {
-                m_cubes[i].transform.localScale = new Vector3(1, Samples[0, i] * m_maxLength, 1);
+                nowY = Samples[0, i] * m_maxLength;
             }
             else
             {
-                float y = m_cubes[i].transform.localScale.y;
-                y = Mathf.SmoothStep(y, 0, m_recoveryRate * Time.deltaTime);
-                m_cubes[i].transform.localScale = new Vector3(1, y, 1);
+                nowY = 0.0f;
+                nowY = Mathf.SmoothStep(oldY, nowY, m_recoveryRate * Time.deltaTime);
             }
+
+            m_cubes[i].transform.localScale = new Vector3(1, nowY, 1);
         }
     }
 }

@@ -22,11 +22,13 @@ public abstract class AudioVisualInfo : MonoBehaviour
     /// <summary>
     /// initialize size on awake
     /// </summary>
-    public SPECTRUM_SIZE m_spectrumSize = SPECTRUM_SIZE.SIZE1024;
+    [SerializeField]
+    private SPECTRUM_SIZE m_spectrumSize = SPECTRUM_SIZE.SIZE1024;
 
-    public FFTWindow m_fftWindow = FFTWindow.Hamming;
-
-    public int m_samplesSpace = 20;
+    [SerializeField]
+    private FFTWindow m_fftWindow = FFTWindow.Hamming;
+    [SerializeField]
+    private int m_samplesSpace = 20;
 
     /// <summary>
     /// must use UpdateSamples function before use this member

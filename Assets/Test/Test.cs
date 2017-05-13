@@ -10,6 +10,7 @@ public class Test : MonoBehaviour
     private void Start()
     {
         operation = gameObject.GetComponent<PathOperation>();
+        
     }
 
     // Update is called once per frame

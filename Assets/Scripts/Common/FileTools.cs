@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using LitJson;
 using System.IO;
+using System.Collections.Generic;
 
 /// <summary>
 /// read and save file
@@ -17,7 +18,7 @@ public static class FileTools
         INI,
         XML
     }
-    
+
     /// <summary>
     /// only support json
     /// </summary>
@@ -70,7 +71,7 @@ public static class FileTools
                 JsonMapper.ToJson(obj, writer);
 
                 File.WriteAllText(path, writer.TextWriter.ToString());
-                
+
                 break;
             case FileType.INI:
                 break;
@@ -79,5 +80,70 @@ public static class FileTools
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// get file path by recursion
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="searchPattern"></param>
+    /// <param name="depth"></param>
+    /// <returns></returns>
+    public static string[] GetFilesByRecursion(string path, string searchPattern, int depth)
+    {
+        List<string> dirPath = new List<string>
+        {
+            path
+        };
+
+        List<string> currentPath = new List<string>();
+        string[] dirs = Directory.GetDirectories(path);
+        currentPath.AddRange(dirs);
+        dirPath.AddRange(dirs);
+
+        for (int i = 0; i < depth; i++)
+        {
+            string[] current = currentPath.ToArray();
+            currentPath.Clear();
+
+            for (int j = 0; j < current.Length; j++)
+            {
+                dirs = Directory.GetDirectories(current[j]);
+                currentPath.AddRange(dirs);
+            }
+
+            dirPath.AddRange(dirs);
+        }
+
+        List<string> filesPath = new List<string>();
+        for (int i = 0; i < dirPath.Count; i++)
+        {
+            filesPath.AddRange(Directory.GetFiles(dirPath[i], searchPattern));
+        }
+
+        return filesPath.ToArray();
+    }
+
+    /// <summary>
+    /// get file name without extension
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    public static string GetFileNameWithoutExtension(string path)
+    {
+        return Path.GetFileNameWithoutExtension(path);
+    }
+
+    public static void GetFilesNameWithoutExtension(string[] paths)
+    {
+        for (int i = 0; i < paths.Length; i++)
+        {
+            paths[i] = Path.GetFileNameWithoutExtension(paths[i]);
+        }
+    }
+
+    public static Object GetResoures(string path)
+    {
+        return Resources.Load(path);
     }
 }

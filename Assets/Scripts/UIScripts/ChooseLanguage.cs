@@ -8,19 +8,18 @@ public class ChooseLanguage : MonoBehaviour
     [SerializeField]
     private Dropdown m_dropdown;
 
-    List<string> options = new List<string>();
-
     private void Start()
     {
+        List<string> options = new List<string>();
+
         m_dropdown = GetComponent<Dropdown>();
         m_dropdown.ClearOptions();
 
-        var files = Directory.GetFiles(DataAnalysis.m_languageFolder);
+        var files = Directory.GetFiles(DataAnalysis.LanguageFolder);
 
-        for (int i = 0; i < files.Length; i++)
-        {
-            options.Add(files[i].Replace(DataAnalysis.m_languageFolder + "\\", ""));
-        }
+        FileTools.GetFilesNameWithoutExtension(files);
+
+        options.AddRange(files);
 
         m_dropdown.AddOptions(options);
         m_dropdown.onValueChanged.AddListener(SetLanguage);
@@ -30,10 +29,7 @@ public class ChooseLanguage : MonoBehaviour
     {
         ComponentsManager manager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
         
-        index = options.Count - 1 - index;
-        index = index < 0 ? 0 : index;
-        manager.m_data.Type = options[index];
-
+        manager.m_data.Type = m_dropdown.options[index].text;
     }
 
 }
