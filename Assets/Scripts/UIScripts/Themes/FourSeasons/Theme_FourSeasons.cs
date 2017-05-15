@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Theme_fourSeasons : Theme {
+public class Theme_FourSeasons : Theme {
 
     [SerializeField]
     private Button[] m_changeModules;
 
-    private new void Start()
+    private  void Start()
     {
         base.Start();
         AddListener();

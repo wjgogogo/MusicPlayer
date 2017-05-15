@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ListModule : ThemeModule
 {
+    public string TestPath = @"F:\音乐";
+
     [SerializeField]
     private GameObject m_listItem;
 
@@ -14,12 +16,44 @@ public class ListModule : ThemeModule
     [SerializeField]
     private RectTransform m_itemRoot;
 
+    [SerializeField]
+    private int m_pathDepth = 3;
+
+    /// <summary>
+    /// all music files full path
+    /// </summary>
+    private List<string> m_filesPath = new List<string>();
+
+    /// <summary>
+    /// all music folder path
+    /// </summary>
     private List<string> m_paths = new List<string>();
 
-    private void Start()
+    private List<MusicItemControl> m_items = new List<MusicItemControl>();
+
+    private List<UIEventListener> m_listeners = new List<UIEventListener>();
+
+    public List<UIEventListener> Listeners
+    {
+        get
+        {
+            return m_listeners;
+        }
+    }
+
+    public string[] FilesPath
+    {
+        get
+        {
+            return m_filesPath.ToArray();
+        }
+    }
+
+    public void Init()
     {
         m_listItem.GetComponent<RectTransform>().
           SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, m_itemHeight);
+        GetMusicList(TestPath);
     }
 
     /// <summary>
@@ -56,30 +90,54 @@ public class ListModule : ThemeModule
     /// <summary>
     /// get music list from file
     /// </summary>
-    public void GetMusicList(string path)
+    private void GetMusicList(string path)
     {
         if (m_paths.Contains(path))
             m_paths.Add(path);
 
-        string[] dir = FileTools.GetFilesByRecursion(path, "*.mp3", 3);
+        string[] files = FileTools.GetFilesByRecursion(path, "*.mp3", m_pathDepth);
 
-        for (int i = 0; i < dir.Length; i++)
+        m_filesPath.AddRange(files);
+
+        for (int i = 0; i < files.Length; i++)
         {
-            CreatListItem(FileTools.GetFileNameWithoutExtension(dir[i]));
+            CreatListItem(files[i]);
         }
     }
 
     /// <summary>
-    /// Creat a item by name
+    /// Creat a item by path
     /// </summary>
-    /// <param name="musicName"></param>
-    private void CreatListItem(string musicName)
+    /// <param name="path"></param>
+    private void CreatListItem(string path)
     {
-        if (ExistInList(musicName))
+        string name = FileTools.GetFileNameWithoutExtension(path);
+        if (ExistInList(name))
             return;
 
         Button newItem = Instantiate(m_listItem, m_itemRoot).GetComponent<Button>();
-        newItem.GetComponent<Text>().text = musicName;
+        newItem.GetComponentInChildren<MusicItemControl>().Text = name;
+        newItem.GetComponentInChildren<MusicItemControl>().FilePath = path;
+        UIEventListener listener = newItem.gameObject.AddComponent<UIEventListener>();
+        m_listeners.Add(listener);
+
+        m_items.Add(newItem.GetComponentInChildren<MusicItemControl>());
+
+        newItem.GetComponentInChildren<MusicItemControl>().SetImageEnabled(false);
     }
 
+    /// <summary>
+    /// set current play song image by path
+    /// </summary>
+    /// <param name="path"></param>
+    public void SetPlayStatus(string path)
+    {
+        for (int i = 0; i < m_items.Count; i++)
+        {
+            if (path == m_items[i].FilePath)
+                m_items[i].SetImageEnabled(true);
+            else
+                m_items[i].SetImageEnabled(false);
+        }
+    }
 }

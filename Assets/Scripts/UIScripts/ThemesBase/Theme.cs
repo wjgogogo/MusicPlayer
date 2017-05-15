@@ -2,11 +2,65 @@
 
 public class Theme : MonoBehaviour
 {
-    protected ThemeModule[] m_modules;
+    [SerializeField]
+    protected ListModule m_listModule;
+    [SerializeField]
+    protected PlayModule m_playModule;
+    [SerializeField]
+    protected SettingModule m_settingModule;
+
+    private ThemeModule[] m_modules;
+
+    [SerializeField]
+    protected KeyCode m_callOutKey = KeyCode.Escape;
+
+    private bool m_calledMenu = true;
+    private ComponentsManager manager;
+
+    protected void Awake()
+    {
+        manager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
+    }
+
+    protected void OnEnable()
+    {
+        manager.m_data.Init();
+        m_playModule.Init();
+        m_listModule.Init();
+        m_settingModule.Init();
+
+    }
 
     protected void Start()
     {
+        Init();
+    }
+
+    private void Init()
+    {
         m_modules = gameObject.GetComponentsInChildren<ThemeModule>();
+
+        for (int i = 0; i < m_listModule.Listeners.Count; i++)
+        {
+            m_listModule.Listeners[i].OnClick += MusicItemOnclick;
+        }
+
+        m_playModule.PreSongOnClick.OnClick += OnPreSongClick;
+        m_playModule.NextSongOnClick.OnClick += OnNextSongOnClick;
+
+        m_listModule.SetPlayStatus(m_playModule.CurrentPlaySongPath);
+        
+        GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
+        GetComponent<Canvas>().worldCamera = manager.m_UICamera;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(m_callOutKey))
+        {
+            m_calledMenu = !m_calledMenu;
+            SetAllModulesActive(m_calledMenu);
+        }
     }
 
     /// <summary>
@@ -60,4 +114,51 @@ public class Theme : MonoBehaviour
             SetActiveModule(i, status);
         }
     }
+
+    private void MusicItemOnclick(GameObject gb)
+    {
+        MusicItemControl item = gb.GetComponent<MusicItemControl>();
+
+        Debug.Log(item.name);
+        m_playModule.PlaySong(item.FilePath, true);
+
+        m_listModule.SetPlayStatus(m_playModule.CurrentPlaySongPath);
+    }
+
+    private void OnPreSongClick(GameObject gb)
+    {
+        string currentSong = m_playModule.CurrentPlaySongPath;
+        string[] allSongsPath = m_listModule.FilesPath;
+        for (int i = 0; i < allSongsPath.Length; i++)
+        {
+            if (allSongsPath[i] == currentSong)
+            {
+                if (i != 0)
+                {
+                    m_playModule.PlaySong(allSongsPath[i - 1], true);
+                }
+            }
+        }
+
+        m_listModule.SetPlayStatus(m_playModule.CurrentPlaySongPath);
+    }
+
+    private void OnNextSongOnClick(GameObject gb)
+    {
+        string currentSong = m_playModule.CurrentPlaySongPath;
+        string[] allSongsPath = m_listModule.FilesPath;
+        for (int i = 0; i < allSongsPath.Length; i++)
+        {
+            if (allSongsPath[i] == currentSong)
+            {
+                if (i != allSongsPath.Length - 1)
+                {
+                    m_playModule.PlaySong(allSongsPath[i + 1], true);
+                }
+            }
+        }
+
+        m_listModule.SetPlayStatus(m_playModule.CurrentPlaySongPath);
+    }
+    
 }

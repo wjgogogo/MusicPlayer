@@ -5,9 +5,10 @@ using UnityEngine;
 public class DataAnalysis : MonoBehaviour
 {
     public const string FilePath = "config.json";
-    public const string LanguageFolder = "./Language";
-    public const string ThemeFolder = "Prefabs/Themes";
-    public const string ThemePrefix = "Theme_";
+    public const string LanguageFolder = ".\\Language";
+    public const string ThemeFolder = "Prefabs\\Themes";
+    private const string ThemePrefix = "Theme_";
+
     [SerializeField]
     private Transform m_themeRoot;
 
@@ -75,6 +76,7 @@ public class DataAnalysis : MonoBehaviour
         set
         {
             m_theme = value;
+            SetTheme(ThemePrefix + m_theme);
         }
     }
 
@@ -82,8 +84,14 @@ public class DataAnalysis : MonoBehaviour
 
     public event LanguageEventProxy OnLanguageTypeChange;
 
-    private void Awake()
+    private bool isInit = false;
+
+    public void Init()
     {
+        if (isInit)
+            return;
+        isInit = true;
+
         string[] languages = FileTools.GetFilesByRecursion(LanguageFolder, "*", 1);
         FileTools.GetFilesNameWithoutExtension(languages);
         m_languageNames.AddRange(languages);
@@ -98,11 +106,9 @@ public class DataAnalysis : MonoBehaviour
             }
         }
         ReadData();
-    }
-
-    private void Start()
-    {
         OnLanguageTypeChange += LanguageChange;
+
+        Debug.Log(name);
     }
 
     private void LanguageChange()
@@ -166,12 +172,18 @@ public class DataAnalysis : MonoBehaviour
 
     private void SetTheme(string name)
     {
-        Theme old = m_themeRoot.GetComponentInChildren<Theme>();
+        Theme[] old = m_themeRoot.GetComponentsInChildren<Theme>();
 
-        Destroy(old.gameObject);
+        string path = Path.Combine(ThemeFolder, name);
+        path = Path.Combine(path, name);
 
-        GameObject newTheme = (GameObject)FileTools.GetResoures(Path.Combine(ThemeFolder, name));
+        GameObject newTheme = (GameObject)FileTools.GetResoures(path);
         Instantiate(newTheme, m_themeRoot);
+
+        for (int i = 0; i < old.Length; i++)
+        {
+            Destroy(old[i].gameObject);
+        }
     }
 
     private void SaveData()

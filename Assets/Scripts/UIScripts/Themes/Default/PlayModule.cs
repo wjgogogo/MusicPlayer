@@ -4,49 +4,81 @@ using UnityEngine.UI;
 public class PlayModule : ThemeModule
 {
     [SerializeField]
-    private Slider m_audioSlider;
+    protected Slider m_audioSlider;
     [SerializeField]
-    private Slider m_volumeSlider;
+    protected Slider m_volumeSlider;
     [SerializeField]
-    private Text m_audioInfo;
+    protected Text m_audioInfo;
 
     [SerializeField]
-    private Toggle m_musicPlay;
+    protected Toggle m_musicPlay;
     [SerializeField]
-    private Button m_preSong;
+    protected Button m_preSong;
     [SerializeField]
-    private Button m_nextSong;
+    protected Button m_nextSong;
 
-    public string TestMusicFilePath = "";
+    private string m_currentPlaySongPath;
+
+    private UIEventListener m_preSongOnClick;
+    private UIEventListener m_nextSongOnClick;
+
     //lack a naudio sources
-    private NaudioSources m_audio=new NaudioSources();
+    private NaudioSources m_audio;
+
+    public UIEventListener PreSongOnClick
+    {
+        get
+        {
+            return m_preSongOnClick;
+        }
+    }
+
+    public UIEventListener NextSongOnClick
+    {
+        get
+        {
+            return m_nextSongOnClick;
+        }
+    }
+
+    public string CurrentPlaySongPath
+    {
+        get
+        {
+            return m_currentPlaySongPath;
+        }
+    }
+
     //lack a list control component
 
-    private void Start()
+    public void Init()
     {
-        //get the Naudio sources
-        m_audio.LoadMusic(TestMusicFilePath);
-
+        m_audio = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>().m_audio;
         m_volumeSlider.onValueChanged.AddListener(SetVolume);
-        m_audioSlider.maxValue = m_audio.TotalTime;
         m_audioSlider.onValueChanged.AddListener(SetAudioTime);
         m_musicPlay.onValueChanged.AddListener(PlaySong);
+        m_preSongOnClick = m_preSong.gameObject.AddComponent<UIEventListener>();
+        m_nextSongOnClick = m_nextSong.gameObject.AddComponent<UIEventListener>();
+        if (m_audio != null)
+            m_audioSlider.maxValue = m_audio.TotalTime;
     }
 
-    public void PlaySong(bool status)
+    public void PlaySong(string path, bool status)
     {
+        m_currentPlaySongPath = path;
+        m_audio.LoadMusic(path);
+
+        if (m_musicPlay.isOn == status)
+            PlaySong(status);
+        else
+            m_musicPlay.isOn = status;
+    }
+
+    private void PlaySong(bool status)
+    {
+        m_audioSlider.maxValue = m_audio.TotalTime;
+        m_audioInfo.text = m_audio.Name;
         m_audio.Play(status);
-        Debug.Log(status);
-    }
-
-    public void PlayNextSong()
-    {
-
-    }
-
-    public void PlayPreSong()
-    {
-
     }
 
     private void SyncAudioSlider()
@@ -74,9 +106,5 @@ public class PlayModule : ThemeModule
     {
         SyncAudioSlider();
     }
-
-    private void OnApplicationQuit()
-    {
-        m_audio.OnApplicationQuit();
-    }
+    
 }

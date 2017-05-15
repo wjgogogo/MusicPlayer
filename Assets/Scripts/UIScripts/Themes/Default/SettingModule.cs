@@ -6,29 +6,30 @@ using UnityEngine.UI;
 public class SettingModule : ThemeModule
 {
     public Button SearchSongs;
-    public Dropdown ChangeTheme;
+    [SerializeField]
+    protected Dropdown m_changeTheme;
 
     [SerializeField]
-    private Button m_colseApp;
+    protected Button m_colseApp;
     [SerializeField]
-    private Toggle m_fullscreen;
+    protected Toggle m_fullscreen;
     [SerializeField]
-    private Dropdown m_changeLanguage;
+    protected Dropdown m_changeLanguage;
 
     [SerializeField]
-    private Text m_textImport;
+    protected Text m_textImport;
     [SerializeField]
-    private Text m_textCloseApp;
+    protected Text m_textCloseApp;
     [SerializeField]
-    private Text m_textFullscreen;
+    protected Text m_textFullscreen;
     [SerializeField]
-    private Text m_textLanguage;
+    protected Text m_textLanguage;
     [SerializeField]
-    private Text m_textTheme;
+    protected Text m_textTheme;
 
     private ComponentsManager manager;
 
-    private void Start()
+    public void Init()
     {
         m_colseApp.onClick.AddListener(CloseApp);
         m_fullscreen.onValueChanged.AddListener(Fullscreen);
@@ -68,6 +69,15 @@ public class SettingModule : ThemeModule
         }
     }
 
+    private void InitTheme(string name)
+    {
+        for (int i = 0; i < m_changeTheme.options.Count; i++)
+        {
+            if (name == m_changeTheme.options[i].text)
+                m_changeTheme.value = i;
+        }
+    }
+
     private void InitDropdown()
     {
         List<string> options = new List<string>();
@@ -75,12 +85,19 @@ public class SettingModule : ThemeModule
         m_changeLanguage.ClearOptions();
         m_changeLanguage.AddOptions(options);
         m_changeLanguage.onValueChanged.AddListener(LoadLanguage);
-
+        
         options.Clear();
 
         options.AddRange(manager.m_data.ThemeNames);
-        ChangeTheme.ClearOptions();
-        ChangeTheme.AddOptions(options);
+        m_changeTheme.ClearOptions();
+        m_changeTheme.AddOptions(options);
+        InitTheme(manager.m_data.Theme);
+        m_changeTheme.onValueChanged.AddListener(LoadTheme);
+    }
+
+    private void LoadTheme(int index)
+    {
+        manager.m_data.Theme = m_changeTheme.options[index].text;
     }
 
     private void LoadLanguage(int index)
@@ -120,6 +137,10 @@ public class SettingModule : ThemeModule
             newSolution = Screen.resolutions[Screen.resolutions.Length - 1];
         }
         Screen.SetResolution(newSolution.width, newSolution.height, flag);
-        Debug.Log("Fullscreen");
+    }
+
+    private void OnDestroy()
+    {
+        manager.m_data.OnLanguageTypeChange -= ModifyTexts;
     }
 }

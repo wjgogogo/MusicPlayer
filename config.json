@@ -2,8 +2,8 @@
 {
     "themeName" : "Theme_default",
     "fullScreen" : false,
-    "playingMusicName" : "Music",
+    "playingMusicName" : "",
     "musicProgressVolume" : 0.0,
     "volume"              : 1.0,
-    "language"            : "en"
+    "language"            : "zh"
 }
