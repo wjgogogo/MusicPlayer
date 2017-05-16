@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 
 public class InputTools : MonoBehaviour {
-
-
+    
     /// <summary>
     /// Get the mouse click object
     /// </summary>
@@ -21,8 +20,5 @@ public class InputTools : MonoBehaviour {
         }
         return null;
     }
-
-
-
-
+    
 }

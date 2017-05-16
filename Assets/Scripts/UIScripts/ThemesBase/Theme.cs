@@ -2,6 +2,9 @@
 
 public class Theme : MonoBehaviour
 {
+
+    [SerializeField]
+    private Vector2 m_maxOffsetDegree = new Vector2(15, 15);
     [SerializeField]
     protected ListModule m_listModule;
     [SerializeField]
@@ -14,7 +17,7 @@ public class Theme : MonoBehaviour
     [SerializeField]
     protected KeyCode m_callOutKey = KeyCode.Escape;
 
-    private bool m_calledMenu = true;
+    protected bool m_calledMenu = true;
     private ComponentsManager manager;
 
     protected void Awake()
@@ -28,11 +31,6 @@ public class Theme : MonoBehaviour
         m_playModule.Init();
         m_listModule.Init();
         m_settingModule.Init();
-
-    }
-
-    protected void Start()
-    {
         Init();
     }
 
@@ -54,12 +52,16 @@ public class Theme : MonoBehaviour
         GetComponent<Canvas>().worldCamera = manager.m_UICamera;
     }
 
-    private void Update()
+    protected void Update()
     {
         if (Input.GetKeyDown(m_callOutKey))
         {
             m_calledMenu = !m_calledMenu;
             SetAllModulesActive(m_calledMenu);
+        }
+        if (m_calledMenu)
+        {
+            RotateWithCamera();
         }
     }
 
@@ -160,5 +162,17 @@ public class Theme : MonoBehaviour
 
         m_listModule.SetPlayStatus(m_playModule.CurrentPlaySongPath);
     }
-    
+
+    // Rotate with camera
+    void RotateWithCamera()
+    {
+
+        Vector2 offset = new Vector2(Input.mousePosition.x - Screen.width / 2,
+            Input.mousePosition.y - Screen.height / 2);
+
+        offset.x = offset.x / Screen.currentResolution.width / 2 * m_maxOffsetDegree.x;
+        offset.y = -offset.y / Screen.currentResolution.height / 2 * m_maxOffsetDegree.y;
+
+        transform.eulerAngles = new Vector3(offset.y, offset.x);
+    }
 }

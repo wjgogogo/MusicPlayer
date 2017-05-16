@@ -1,25 +1,32 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 using System;
 using System.IO;
-using System.Threading;
+using NaudioSource;
 
-public class NaudioSources 
+public class NaudioSources
 {
-    private IWavePlayer waveoutPlayer;
-    private AudioFileReader audioFileReader;
-    private WaveChannel32 waveoutStream;
-    private FadeInOutSampleProvider fadeInOut;
+    private WaveOut waveoutPlayer;
+    private WaveStream waveStream;
+    private WaveChannel32 inputStream;
+    private SampleAggregator sampleAggregator;
 
     private string currentSongPath;
-    private float totalTime = 0.0f;
-    private int  FadeDuration = 5;
-    private int fftDataSize = 2048;
+    private float m_totalTime = 0f;
 
-    //the total length of the song
-    private float m_totalTime;
+    private FFTSize m_bufferLength = FFTSize.FFT512;
+
+    public FFTSize BufferLength
+    {
+        set
+        {
+            m_bufferLength = value;
+        }
+        get
+        {
+            return m_bufferLength;
+        }
+    }
 
     public float TotalTime
     {
@@ -28,7 +35,7 @@ public class NaudioSources
             return m_totalTime;
         }
     }
-    
+
     public float CurrentTime
     {
         get
@@ -72,14 +79,167 @@ public class NaudioSources
         }
     }
 
+    #region Create and Close
+
     /// <summary>
-    /// get the samples by channel
+    /// init event
     /// </summary>
-    /// <param name="samples">sample data</param>
-    /// <param name="channel">0 left and 1 right</param>
-    public void GetSample(ref float samples, int channel)
+    private void CreateEvent()
     {
+        DisposeEvent();
+
+        sampleAggregator = new SampleAggregator((int)m_bufferLength);
+        waveoutPlayer = new WaveOut()
+        {
+            DesiredLatency = 100
+        };
+        waveoutPlayer.PlaybackStopped += OnPlaybackStopped;
+        waveStream = InitFileReader(currentSongPath);
+        inputStream = new WaveChannel32(waveStream);
+        waveoutPlayer.Init(inputStream);
+
+        m_totalTime = (float)inputStream.TotalTime.TotalSeconds;
+        inputStream.Sample += SampleRead;
     }
+
+    private WaveStream InitFileReader(string path)
+    {
+        if (path.EndsWith(".mp3"))
+            return new Mp3FileReader(path);
+        else
+            return new WaveFileReader(path);
+    }
+
+    private void SampleRead(object sender, SampleEventArgs e)
+    {
+        sampleAggregator.Add(e.Left, e.Right);
+    }
+
+    /// <summary>
+    /// dispose the waveout and audiofilereader
+    /// </summary>
+    private void DisposeEvent()
+    {
+        Stop();
+        if (waveStream != null)
+        {
+            inputStream.Close();
+            inputStream = null;
+            waveStream.Close();
+            waveStream = null;
+        }
+        if (waveoutPlayer != null)
+        {
+            waveoutPlayer.Dispose();
+            waveoutPlayer = null;
+        }
+    }
+
+    #endregion Create and Close
+
+    #region Common Operation
+
+    /// <summary>
+    /// play the song
+    /// </summary>
+    private void PlayMusic()
+    {
+        if (waveoutPlayer != null)
+        {
+            if (waveoutPlayer.PlaybackState != PlaybackState.Playing)
+            {
+                waveoutPlayer.Play();
+            }
+        }
+    }
+
+    /// <summary>
+    /// pause the song
+    /// </summary>
+    private void PauseMusic()
+    {
+        if (waveoutPlayer != null)
+        {
+            if (waveoutPlayer.PlaybackState == PlaybackState.Playing)
+            {
+                waveoutPlayer.Pause();
+            }
+        }
+    }
+
+    /// <summary>
+    /// stop the song
+    /// </summary>
+    private void Stop()
+    {
+        if (waveoutPlayer != null)
+            waveoutPlayer.Stop();
+        if (inputStream != null)
+            inputStream.Position = 0;
+    }
+
+    public void OnPlaybackStopped(object sender, StoppedEventArgs e)
+    {
+        Debug.Log("the song stopped");
+    }
+
+    #endregion Common Operation
+
+    #region Volume
+
+    /// <summary>
+    /// change the volume
+    /// </summary>
+    /// <param name="volume"></param>
+    private void SetVolume(float volume)
+    {
+        if (inputStream != null)
+            inputStream.Volume = volume;
+    }
+
+    /// <summary>
+    /// get the volume
+    /// </summary>
+    /// <returns></returns>
+    private float GetVolume()
+    {
+        if (inputStream != null)
+            return inputStream.Volume;
+        else
+            return 0.0f;
+    }
+
+    #endregion Volume
+
+    #region Time
+
+    /// <summary>
+    /// set the current time after change range:0-1
+    /// </summary>
+    /// <param name="time"></param>
+    private void SetCurrentTime(float time)
+    {
+        if (waveoutPlayer != null && inputStream != null)
+        {
+            inputStream.CurrentTime = TimeSpan.FromSeconds(time);
+        }
+    }
+
+    private float GetCurrentTime()
+    {
+        if (waveoutPlayer != null && inputStream != null)
+        {
+            TimeSpan time = (waveoutPlayer.PlaybackState == PlaybackState.Stopped) ? TimeSpan.Zero : inputStream.CurrentTime;
+
+            return (float)time.TotalSeconds;
+        }
+        else
+            return 0.0f;
+    }
+
+    #endregion Time
+
+    #region Other Public Methods
 
     /// <summary>
     ///set the status -- play or stop
@@ -91,18 +251,6 @@ public class NaudioSources
             PlayMusic();
         else
             PauseMusic();
-    }
-
-    private float GetCurrentTime()
-    {
-        if (waveoutPlayer != null && audioFileReader != null)
-        {
-            TimeSpan time = (waveoutPlayer.PlaybackState == PlaybackState.Stopped) ? TimeSpan.Zero : audioFileReader.CurrentTime;
-
-            return (float)time.TotalSeconds;
-        }
-        else
-            return 0.0f;
     }
 
     /// <summary>
@@ -125,137 +273,18 @@ public class NaudioSources
     }
 
     /// <summary>
-    /// init event
-    /// </summary>
-    private void CreateEvent()
-    {
-        CloseEvent();
-
-        waveoutPlayer = new WaveOutEvent();
-        waveoutPlayer.PlaybackStopped += OnPlaybackStopped;
-        audioFileReader = new AudioFileReader(currentSongPath);
-        m_totalTime = (float)audioFileReader.TotalTime.TotalSeconds;
-        waveoutStream = new WaveChannel32(audioFileReader);
-        fadeInOut = new FadeInOutSampleProvider(audioFileReader);
-
-        waveoutPlayer.Init(fadeInOut);
-    }
-
-    /// <summary>
-    /// dispose the waveout and audiofilereader
-    /// </summary>
-    private void CloseEvent()
-    {
-        if (waveoutPlayer != null)
-        {
-            waveoutPlayer.Stop();
-        }
-        if (audioFileReader != null)
-        {
-            audioFileReader.Dispose();
-            audioFileReader = null;
-        }
-        if (waveoutPlayer != null)
-        {
-            waveoutPlayer.Dispose();
-            waveoutPlayer = null;
-        }
-
-        fadeInOut = null;
-    }
-
-    private void OnPlaybackStopped(object sender, StoppedEventArgs e)
-    {
-        Debug.Log("stop");
-    }
-
-    /// <summary>
-    /// play the song
-    /// </summary>
-    private void PlayMusic()
-    {
-        if (waveoutPlayer != null)
-        {
-            if (waveoutPlayer.PlaybackState != PlaybackState.Playing)
-            {
-                Debug.Log("play");
-                waveoutPlayer.Play();
-            }
-        }
-    }
-
-    /// <summary>
-    /// pause the song
-    /// </summary>
-    private void PauseMusic()
-    {
-        if (waveoutPlayer != null)
-        {
-            if (waveoutPlayer.PlaybackState == PlaybackState.Playing)
-            {
-                Action fadeOut = new Action(() =>
-                  {
-                      fadeInOut.BeginFadeOut(FadeDuration);
-                      Thread.Sleep(FadeDuration);
-                      fadeInOut.BeginFadeIn(0);
-                      waveoutPlayer.Pause();
-                  });
-                fadeOut.BeginInvoke(null, null);
-            }
-        }
-    }
-
-
- 
-    /// <summary>
-    /// stop the song
-    /// </summary>
-    public void Stop()
-    {
-        if (waveoutPlayer != null)
-            waveoutPlayer.Stop();
-        if (audioFileReader != null)
-            audioFileReader.Position = 0;
-    }
-
-    /// <summary>
-    /// change the volume
-    /// </summary>
-    /// <param name="volume"></param>
-    private void SetVolume(float volume)
-    {
-        audioFileReader.Volume = volume;
-    }
-
-    /// <summary>
-    /// get the volume
-    /// </summary>
-    /// <returns></returns>
-    private float GetVolume()
-    {
-        if (audioFileReader != null)
-            return audioFileReader.Volume;
-        else
-            return 0.0f;
-    }
-
-    /// <summary>
-    /// set the current time after change range:0-1
-    /// </summary>
-    /// <param name="time"></param>
-    private void SetCurrentTime(float time)
-    {
-        if (waveoutPlayer != null && audioFileReader != null)
-        {
-            audioFileReader.CurrentTime = TimeSpan.FromSeconds(time);
-        }
-    }
-
-    /// <summary>
     /// dispose the waveout and audiofilereader when application quit
     /// </summary>
     public void OnApplicationQuit()
     {
-        CloseEvent();
+        DisposeEvent();
     }
+
+    public void GetSample(float[] sample, int channel, NaudioSource.FFTWindow window)
+    {
+        if (sampleAggregator != null)
+            sampleAggregator.GetFFTResults(sample, channel, window);
+    }
+
+    #endregion Other Public Methods
 }

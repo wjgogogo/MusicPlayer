@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class Theme_Default : Theme
 {
-    private new void Start()
+    private  void Start()
     {
-        base.Start();
+        
     }
 }

@@ -3,8 +3,7 @@
 public class ComponentsManager : MonoBehaviour
 {
     public const string SELF_TAG = "ComponentsManager";
-
-
+    
     // data analysis
     public DataAnalysis m_data;
 
@@ -13,8 +12,7 @@ public class ComponentsManager : MonoBehaviour
 
     // aduio sources
     public NaudioSources m_audio = new NaudioSources();
-
-
+    
     private void OnApplicationQuit()
     {
         m_audio.OnApplicationQuit();

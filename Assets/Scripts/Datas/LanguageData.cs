@@ -40,21 +40,5 @@
 
         debug = @"调试";
     }
-
-    private void ToUTF8()
-    {
-        StringTools.ToUTF8(ref appName);
-        StringTools.ToUTF8(ref close);
-        StringTools.ToUTF8(ref fullscreen);
-        StringTools.ToUTF8(ref confirm);
-        StringTools.ToUTF8(ref cancel);
-        StringTools.ToUTF8(ref soundVolume);
-        StringTools.ToUTF8(ref play);
-        StringTools.ToUTF8(ref pause);
-        StringTools.ToUTF8(ref stop);
-        StringTools.ToUTF8(ref theme);
-        StringTools.ToUTF8(ref import);
-        StringTools.ToUTF8(ref setting);
-        StringTools.ToUTF8(ref debug);
-    }
+    
 }

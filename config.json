@@ -1,9 +1,9 @@
 
 {
-    "themeName" : "Theme_default",
+    "themeName" : "Default",
     "fullScreen" : false,
-    "playingMusicName" : "",
-    "musicProgressVolume" : 0.0,
+    "playingMusicName" : "Blue Apollo - Adeus",
+    "musicProgressVolume" : 18.2000007629395,
     "volume"              : 1.0,
     "language"            : "zh"
 }

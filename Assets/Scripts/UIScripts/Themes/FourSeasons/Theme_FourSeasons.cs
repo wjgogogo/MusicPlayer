@@ -8,9 +8,8 @@ public class Theme_FourSeasons : Theme {
     [SerializeField]
     private Button[] m_changeModules;
 
-    private  void Start()
+    private void Start()
     {
-        base.Start();
         AddListener();
     }
 
@@ -23,6 +22,19 @@ public class Theme_FourSeasons : Theme {
             {
                 SwitchModule(obj);
             };
+        }
+    }
+
+    private new void Update()
+    {
+        base.Update();
+
+        if (Input.GetKeyDown(m_callOutKey))
+        {
+            for (int i = 0; i < m_changeModules.Length; i++)
+            {
+                m_changeModules[i].gameObject.SetActive(m_calledMenu);
+            }
         }
     }
 

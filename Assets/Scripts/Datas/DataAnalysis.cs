@@ -19,7 +19,7 @@ public class DataAnalysis : MonoBehaviour
     private List<string> m_themeNames = new List<string>();
 
     private string m_languageType = "zh";
-    private string m_theme = ThemePrefix + "Default";
+    private string m_theme = "Default";
 
     public DataToSave Data
     {
@@ -91,7 +91,13 @@ public class DataAnalysis : MonoBehaviour
         if (isInit)
             return;
         isInit = true;
+        ReadData();
+        InitLanguage();
+        Theme = m_theme;
+    }
 
+    private void InitLanguage()
+    {
         string[] languages = FileTools.GetFilesByRecursion(LanguageFolder, "*", 1);
         FileTools.GetFilesNameWithoutExtension(languages);
         m_languageNames.AddRange(languages);
@@ -105,10 +111,8 @@ public class DataAnalysis : MonoBehaviour
                 m_themeNames.Add(objs[i].name.Replace(ThemePrefix, ""));
             }
         }
-        ReadData();
-        OnLanguageTypeChange += LanguageChange;
 
-        Debug.Log(name);
+        OnLanguageTypeChange += LanguageChange;
     }
 
     private void LanguageChange()
@@ -118,12 +122,12 @@ public class DataAnalysis : MonoBehaviour
 
     public void UpdateSaveData()
     {
-        ComponentsManager obj = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
+        ComponentsManager manager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
 
-        //m_data.playingMusicName = obj.m_audio.name;
-        //m_data.musicProgressVolume = obj.m_audio.time;
-
-        //m_data.volume = obj.m_audio.volume;
+        m_data.playingMusicName = manager.m_audio.Name;
+        m_data.musicProgressVolume = manager.m_audio.CurrentTime;
+        m_data.volume = manager.m_audio.Volume;
+        m_data.themeName = Theme;
 
         m_data.fullScreen = Screen.fullScreen;
     }
@@ -142,6 +146,7 @@ public class DataAnalysis : MonoBehaviour
         else
         {
             FileTools.ReadFileToObject(ref m_data, FilePath);
+            m_theme = m_data.themeName;
         }
         ReadLanguageFile();
     }

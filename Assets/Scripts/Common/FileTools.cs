@@ -142,6 +142,11 @@ public static class FileTools
         }
     }
 
+    /// <summary>
+    /// Get resources according to path
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
     public static Object GetResoures(string path)
     {
         return Resources.Load(path);
