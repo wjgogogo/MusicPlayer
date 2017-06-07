@@ -21,6 +21,9 @@ public class DataAnalysis : MonoBehaviour
     private string m_languageType = "zh";
     private string m_theme = "Default";
 
+    private List<string> m_musicPaths = new List<string>();
+
+
     public DataToSave Data
     {
         get
@@ -80,6 +83,14 @@ public class DataAnalysis : MonoBehaviour
         }
     }
 
+    public string[] MusicPaths
+    {
+        get
+        {
+            return m_musicPaths.ToArray();
+        }
+    }
+
     public delegate void LanguageEventProxy();
 
     public event LanguageEventProxy OnLanguageTypeChange;
@@ -94,6 +105,12 @@ public class DataAnalysis : MonoBehaviour
         ReadData();
         InitLanguage();
         Theme = m_theme;
+    }
+
+    public void AddMusicPath(string path)
+    {
+        m_musicPaths.Add(path);
+        m_data.musicPaths = m_musicPaths.ToArray();
     }
 
     private void InitLanguage()
@@ -147,6 +164,7 @@ public class DataAnalysis : MonoBehaviour
         {
             FileTools.ReadFileToObject(ref m_data, FilePath);
             m_theme = m_data.themeName;
+            m_musicPaths.AddRange(Data.musicPaths);
         }
         ReadLanguageFile();
     }

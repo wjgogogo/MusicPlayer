@@ -9,6 +9,7 @@
     public double musicProgressVolume = 0.0;
     public double volume = 1.0;
     public string language = "zh";
+    public string[] musicPaths;
 
     public override string ToString()
     {
@@ -19,6 +20,10 @@
         str += "playing music name : " + playingMusicName + "\n";
         str += "music progress volume : " + musicProgressVolume + "\n";
         str += "music volume : " + volume + "\n";
+        foreach (var item in musicPaths)
+        {
+            str += "music path : " + item + "\n";
+        }
         return str;
     }
 }

@@ -2,8 +2,11 @@
 {
     "themeName" : "Default",
     "fullScreen" : false,
-    "playingMusicName" : "Blue Apollo - Adeus",
-    "musicProgressVolume" : 18.2000007629395,
+    "playingMusicName" : "Deutschland sucht den Superstar - Cry On My Shoulder",
+    "musicProgressVolume" : 4.34999990463257,
     "volume"              : 1.0,
-    "language"            : "zh"
+    "language"            : "zh",
+    "musicPaths"          : [
+        "F:\\\u97F3\u4E50"
+    ]
 }

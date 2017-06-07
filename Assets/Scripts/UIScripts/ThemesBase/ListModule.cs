@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class ListModule : ThemeModule
 {
-    public string TestPath = @"F:\音乐";
-
     [SerializeField]
     private GameObject m_listItem;
 
@@ -53,7 +51,9 @@ public class ListModule : ThemeModule
     {
         m_listItem.GetComponent<RectTransform>().
           SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, m_itemHeight);
-        GetMusicList(TestPath);
+        ComponentsManager manager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
+        m_paths.AddRange(manager.m_data.MusicPaths);
+        FreshMusicList();
     }
 
     /// <summary>
@@ -65,6 +65,11 @@ public class ListModule : ThemeModule
         {
             GetMusicList(m_paths[i]);
         }
+    }
+
+    public void FreshMusicList(string path)
+    {
+        GetMusicList(path);
     }
 
     /// <summary>
@@ -92,8 +97,13 @@ public class ListModule : ThemeModule
     /// </summary>
     private void GetMusicList(string path)
     {
-        if (m_paths.Contains(path))
+        if (!m_paths.Contains(path))
+        {
+            Debug.Log(path);
+            ComponentsManager manager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
+            manager.m_data.AddMusicPath(path);
             m_paths.Add(path);
+        }
 
         string[] files = FileTools.GetFilesByRecursion(path, "*.mp3", m_pathDepth);
 

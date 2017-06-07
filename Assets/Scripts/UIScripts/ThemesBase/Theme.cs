@@ -38,18 +38,20 @@ public class Theme : MonoBehaviour
     {
         m_modules = gameObject.GetComponentsInChildren<ThemeModule>();
 
+        m_playModule.PreSongOnClick.OnClick += OnPreSongClick;
+        m_playModule.NextSongOnClick.OnClick += OnNextSongOnClick;
+        
+        GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
+        GetComponent<Canvas>().worldCamera = manager.m_UICamera;
+
         for (int i = 0; i < m_listModule.Listeners.Count; i++)
         {
             m_listModule.Listeners[i].OnClick += MusicItemOnclick;
         }
 
-        m_playModule.PreSongOnClick.OnClick += OnPreSongClick;
-        m_playModule.NextSongOnClick.OnClick += OnNextSongOnClick;
-
         m_listModule.SetPlayStatus(m_playModule.CurrentPlaySongPath);
-        
-        GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
-        GetComponent<Canvas>().worldCamera = manager.m_UICamera;
+
+        m_settingModule.GetDialogPath(FreshMusicList);
     }
 
     protected void Update()
@@ -59,10 +61,22 @@ public class Theme : MonoBehaviour
             m_calledMenu = !m_calledMenu;
             SetAllModulesActive(m_calledMenu);
         }
+
         if (m_calledMenu)
         {
             RotateWithCamera();
         }
+    }
+
+    private void FreshMusicList(string path)
+    {
+        m_listModule.FreshMusicList(path);
+        for (int i = 0; i < m_listModule.Listeners.Count; i++)
+        {
+            m_listModule.Listeners[i].OnClick += MusicItemOnclick;
+        }
+
+        m_listModule.SetPlayStatus(m_playModule.CurrentPlaySongPath);
     }
 
     /// <summary>

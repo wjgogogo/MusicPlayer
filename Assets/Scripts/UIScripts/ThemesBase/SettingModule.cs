@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SettingModule : ThemeModule
 {
-    public Button SearchSongs;
+    public Button ImportSongs;
     [SerializeField]
     protected Dropdown m_changeTheme;
 
@@ -29,6 +29,8 @@ public class SettingModule : ThemeModule
 
     private ComponentsManager manager;
 
+    protected FolderBrowserDialog dialog = new FolderBrowserDialog();
+
     public void Init()
     {
         m_colseApp.onClick.AddListener(CloseApp);
@@ -37,11 +39,23 @@ public class SettingModule : ThemeModule
         manager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
         manager.m_data.OnLanguageTypeChange += ModifyTexts;
 
+        ImportSongs.onClick.AddListener(LoadingSongs);
+
         InitDropdown();
         InitLanguage(manager.m_data.Data.language);
         InitFullscrren(manager.m_data.Data.fullScreen);
     }
 
+    public void GetDialogPath(FolderBrowserManager.GetPath method)
+    {
+        dialog.getPathEvent += method;
+    }
+
+    private void LoadingSongs()
+    {
+        dialog.ShowDialog();
+    }
+    
     private void InitFullscrren(bool isOn)
     {
         if (m_fullscreen.isOn == isOn)

@@ -6,8 +6,7 @@ public class CubeManager : AudioVisualInfo
 {
     [SerializeField]
     private int m_cubeNumber = 10;
-    [SerializeField]
-    private Vector2 m_origin = Vector2.zero;
+
     [SerializeField]
     private float m_radius = 10.0f;
 
