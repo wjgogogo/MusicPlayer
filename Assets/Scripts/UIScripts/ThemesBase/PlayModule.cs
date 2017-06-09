@@ -53,19 +53,36 @@ public class PlayModule : ThemeModule
 
     public void Init()
     {
+        m_currentPlaySongPath = string.Empty;
         m_audio = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>().m_audio;
         m_volumeSlider.onValueChanged.AddListener(SetVolume);
         m_audioSlider.onValueChanged.AddListener(SetAudioTime);
         m_musicPlay.onValueChanged.AddListener(PlaySong);
         m_preSongOnClick = m_preSong.gameObject.AddComponent<UIEventListener>();
         m_nextSongOnClick = m_nextSong.gameObject.AddComponent<UIEventListener>();
-        if (m_audio != null)
-            m_audioSlider.maxValue = m_audio.TotalTime;
+        m_audioSlider.maxValue = 100f;
+    }
+
+    public void SetVolumeSlider(float value)
+    {
+        m_volumeSlider.value = value;
+    }
+
+    public void SetSongSlider(float value)
+    {
+        m_audioSlider.value = value;
+    }
+
+    public void PlaySong(string path, bool status, float time)
+    {
+        PlaySong(path, status);
+        m_audioSlider.value = time;
     }
 
     public void PlaySong(string path, bool status)
     {
         m_currentPlaySongPath = path;
+
         m_audio.LoadMusic(path);
 
         if (m_musicPlay.isOn == status)
@@ -76,6 +93,12 @@ public class PlayModule : ThemeModule
 
     private void PlaySong(bool status)
     {
+        if (m_currentPlaySongPath == string.Empty)
+        {
+            m_musicPlay.isOn = false;
+            return;
+        }
+
         m_audioSlider.maxValue = m_audio.TotalTime;
         m_audioInfo.text = m_audio.Name;
         m_audio.Play(status);
@@ -83,7 +106,8 @@ public class PlayModule : ThemeModule
 
     private void SyncAudioSlider()
     {
-        m_audioSlider.value = m_audio.CurrentTime;
+        if (m_currentPlaySongPath != string.Empty)
+            m_audioSlider.value = m_audio.CurrentTime;
     }
 
     private void SetVolume(float value)
@@ -102,9 +126,9 @@ public class PlayModule : ThemeModule
         m_audioInfo.text = m_audio.Name;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         SyncAudioSlider();
     }
-    
+
 }

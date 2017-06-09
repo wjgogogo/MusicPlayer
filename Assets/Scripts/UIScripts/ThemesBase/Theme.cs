@@ -2,7 +2,6 @@
 
 public class Theme : MonoBehaviour
 {
-
     [SerializeField]
     private Vector2 m_maxOffsetDegree = new Vector2(15, 15);
     [SerializeField]
@@ -38,9 +37,13 @@ public class Theme : MonoBehaviour
     {
         m_modules = gameObject.GetComponentsInChildren<ThemeModule>();
 
+        m_playModule.PlaySong(manager.m_data.Data.playingMusicNamePath, false,
+           (float)manager.m_data.Data.musicProgressValue);
+        m_playModule.SetSongSlider((float)manager.m_data.Data.musicProgressValue);
+        m_playModule.SetVolumeSlider((float)manager.m_data.Data.volume);
         m_playModule.PreSongOnClick.OnClick += OnPreSongClick;
         m_playModule.NextSongOnClick.OnClick += OnNextSongOnClick;
-        
+
         GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
         GetComponent<Canvas>().worldCamera = manager.m_UICamera;
 
@@ -52,6 +55,7 @@ public class Theme : MonoBehaviour
         m_listModule.SetPlayStatus(m_playModule.CurrentPlaySongPath);
 
         m_settingModule.GetDialogPath(FreshMusicList);
+       
     }
 
     protected void Update()
@@ -133,7 +137,14 @@ public class Theme : MonoBehaviour
 
     private void MusicItemOnclick(GameObject gb)
     {
+        const float Click_Delta_Time = 1f;
         MusicItemControl item = gb.GetComponent<MusicItemControl>();
+
+        if (Mathf.Abs(Time.time - item.DeltaTime) > Click_Delta_Time)
+        {
+            item.DeltaTime = Time.time;
+            return;
+        }
 
         Debug.Log(item.name);
         m_playModule.PlaySong(item.FilePath, true);

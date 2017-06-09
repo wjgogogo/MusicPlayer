@@ -141,11 +141,10 @@ public class DataAnalysis : MonoBehaviour
     {
         ComponentsManager manager = GameObject.FindGameObjectWithTag(ComponentsManager.SELF_TAG).GetComponent<ComponentsManager>();
 
-        m_data.playingMusicName = manager.m_audio.Name;
-        m_data.musicProgressVolume = manager.m_audio.CurrentTime;
+        m_data.playingMusicNamePath = manager.m_audio.CurrentSongPath;
+        m_data.musicProgressValue = manager.m_audio.CurrentTime;
         m_data.volume = manager.m_audio.Volume;
         m_data.themeName = Theme;
-
         m_data.fullScreen = Screen.fullScreen;
     }
 
@@ -164,7 +163,8 @@ public class DataAnalysis : MonoBehaviour
         {
             FileTools.ReadFileToObject(ref m_data, FilePath);
             m_theme = m_data.themeName;
-            m_musicPaths.AddRange(Data.musicPaths);
+            if (Data.musicPaths != null)
+                m_musicPaths.AddRange(Data.musicPaths);
         }
         ReadLanguageFile();
     }
@@ -209,14 +209,9 @@ public class DataAnalysis : MonoBehaviour
         }
     }
 
-    private void SaveData()
+    public void SaveData()
     {
         FileTools.SaveObjectDataToFile(m_data, FilePath);
     }
 
-    private void OnApplicationQuit()
-    {
-        UpdateSaveData();
-        SaveData();
-    }
 }

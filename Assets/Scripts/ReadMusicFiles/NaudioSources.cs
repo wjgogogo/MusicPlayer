@@ -48,6 +48,14 @@ public class NaudioSources
         }
     }
 
+    public string CurrentSongPath
+    {
+        get
+        {
+            return currentSongPath;
+        }
+    }
+
     public string Name
     {
         get

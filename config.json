@@ -2,11 +2,11 @@
 {
     "themeName" : "Default",
     "fullScreen" : false,
-    "playingMusicName" : "Deutschland sucht den Superstar - Cry On My Shoulder",
-    "musicProgressVolume" : 4.34999990463257,
-    "volume"              : 1.0,
-    "language"            : "zh",
-    "musicPaths"          : [
+    "playingMusicNamePath" : "F:\\\u97F3\u4E50\\Blue - U Make Me Wanna.mp3",
+    "musicProgressValue"   : 130.949996948242,
+    "volume"               : 1.0,
+    "language"             : "zh",
+    "musicPaths"           : [
         "F:\\\u97F3\u4E50"
     ]
 }

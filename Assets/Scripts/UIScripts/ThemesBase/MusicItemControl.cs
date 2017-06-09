@@ -7,6 +7,8 @@ public class MusicItemControl : MonoBehaviour
 
     public string FilePath;
 
+    public float DeltaTime = 0f;
+
     public string Text
     {
         get
