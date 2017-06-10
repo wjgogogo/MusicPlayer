@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: 833b793c956e0fc41be25bd44cd4a8e3
+timeCreated: 1492582758
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - m_fullScreenToggle: {instanceID: 0}
+  - m_closeAppButton: {instanceID: 0}
+  - m_minModeButton: {instanceID: 0}
+  - m_audioSlider: {instanceID: 0}
+  - m_volumeSlider: {instanceID: 0}
+  - m_audioInfo: {instanceID: 0}
+  - m_audioPlay: {instanceID: 0}
+  - m_audioPreSong: {instanceID: 0}
+  - m_audioNextSong: {instanceID: 0}
+  - m_listItem: {fileID: 1751958041194732, guid: 1b4d7d011b1330d4b8698effef86d7ea,
+      type: 2}
+  - m_freshButton: {instanceID: 0}
+  - m_info: {instanceID: 0}
+  - m_audio: {instanceID: 0}
+  - DataManager: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

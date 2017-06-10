@@ -78,9 +78,5 @@ $RECYCLE.BIN/
 *.msp
 
 # Windows shortcuts
-*.lnk
-*.meta
 Bulid
-*.asset
-config.json
 config.json

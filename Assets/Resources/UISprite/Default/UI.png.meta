@@ -1,0 +1,232 @@
+fileFormatVersion: 2
+guid: ff4326f77f3e887458d653fb2c10bf7b
+timeCreated: 1492157260
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: UI_logo
+    21300002: UI_rect
+    21300004: UI_preSong
+    21300006: UI_nextSong
+    21300008: UI_pause
+    21300010: UI_play
+    21300012: UI_menu
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: UI_logo
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 605
+        width: 278
+        height: 282
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -108, y: 141}
+        - {x: -139, y: 108}
+        - {x: -139, y: -106}
+        - {x: -108, y: -141}
+        - {x: 120, y: -141}
+        - {x: 139, y: -124}
+        - {x: 139, y: 106}
+        - {x: 131, y: 141}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_rect
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 580
+        width: 300
+        height: 300
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 5, y: 5, z: 5, w: 5}
+      outline:
+      - - {x: -123, y: 123}
+        - {x: -123, y: -123}
+        - {x: 123, y: -123}
+        - {x: 123, y: 123}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_preSong
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 305
+        width: 231
+        height: 230
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -63.5, y: 115}
+        - {x: -115.5, y: 91}
+        - {x: -115.5, y: -72}
+        - {x: -85.5, y: -115}
+        - {x: 84.5, y: -115}
+        - {x: 115.5, y: -107}
+        - {x: 115.5, y: 98}
+        - {x: 93.5, y: 115}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_nextSong
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 309
+        width: 230
+        height: 230
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -72, y: 115}
+        - {x: -115, y: 101}
+        - {x: -115, y: -115}
+        - {x: 115, y: -115}
+        - {x: 115, y: 60}
+        - {x: 72, y: 115}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_pause
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 309
+        width: 230
+        height: 230
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -59, y: 115}
+        - {x: -76, y: 113}
+        - {x: -115, y: 84}
+        - {x: -115, y: -79}
+        - {x: -105, y: -115}
+        - {x: 72, y: -115}
+        - {x: 115, y: -99}
+        - {x: 115, y: 91}
+        - {x: 70, y: 115}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_play
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 9
+        width: 231
+        height: 230
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -65.5, y: 115}
+        - {x: -115.5, y: 102}
+        - {x: -115.5, y: -83}
+        - {x: -101.5, y: -115}
+        - {x: 115.5, y: -115}
+        - {x: 115.5, y: 115}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_menu
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 230
+        height: 231
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -68, y: 115.5}
+        - {x: -109, y: 99.5}
+        - {x: -115, y: 92.5}
+        - {x: -115, y: -70.5}
+        - {x: -85, y: -115.5}
+        - {x: 88, y: -115.5}
+        - {x: 115, y: -93.5}
+        - {x: 115, y: 62.5}
+        - {x: 64, y: 115.5}
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
